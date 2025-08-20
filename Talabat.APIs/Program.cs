@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Talabat.APIs.Extentions;
 using Talabat.Infrastructure.Persistence;
 using Talabat.Infrastructure.Persistence.Data;
 namespace Talabat.APIs
@@ -21,26 +22,9 @@ namespace Talabat.APIs
 
             var app = builder.Build();
 
-            #region UpdateDatabase
-
-            using var scope = app.Services.CreateAsyncScope();
-            var services = scope.ServiceProvider;
-            var dbContext = services.GetRequiredService<StoreContext>();
-            var loggerFactory= services.GetRequiredService<ILoggerFactory>();
-
-            try
-            {
-                var pendingMigratuiions = dbContext.Database.GetPendingMigrations();
-                if (pendingMigratuiions.Any())
-                    await dbContext.Database.MigrateAsync();
-                 
-            }
-            catch (Exception ex)
-            {
-                var logger = loggerFactory.CreateLogger<Program>();
-                logger.LogError(ex, "An error occurred during migrations");
-
-            }
+            # region DatabaseInitializer
+            await app.InitializeStoreContextAsync();
+           
             #endregion
 
             // Configure the HTTP request pipeline.
