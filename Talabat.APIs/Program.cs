@@ -1,3 +1,4 @@
+using Talabat.Infrastructure.Persistence;
 namespace Talabat.APIs
 {
     public class Program
@@ -11,6 +12,7 @@ namespace Talabat.APIs
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddPersistenceServices(builder.Configuration);
 
             var app = builder.Build();
 
