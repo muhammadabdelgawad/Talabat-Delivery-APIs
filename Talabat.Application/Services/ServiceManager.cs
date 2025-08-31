@@ -14,8 +14,8 @@ namespace Talabat.Application.Services
         {
             _unitOfWork=unitOfWork;
             _mapper=mapper;
-            _productService=new Lazy<IProductService>(()=>new ProductService(_unitOfWork,_mapper));
+           // _productService=new Lazy<IProductService>(()=>new ProductService(_unitOfWork,_mapper));
         }
-        public IProductService ProductService => =>_productService.Value;
+        public IProductService ProductService  =>_productService.Value;
     }
 }
