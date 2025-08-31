@@ -1,12 +1,42 @@
-﻿using Talabat.Application.Abstraction.Services.Products;
+﻿using AutoMapper;
+using Talabat.Application.Abstraction.DTOs.Products;
+using Talabat.Application.Abstraction.Models.Products;
+using Talabat.Application.Abstraction.Services.Products;
+using Talabat.Domain.Contracts;
+using Talabat.Domain.Entities;
 
 namespace Talabat.Application.Services.Products
 {
-    public class ProductService : IProductService
+    public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
-        public ProductService()
+        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync()
         {
-            
+            var products = await unitOfWork.GetRepositiry<Product, int>().GetAllAsync();
+            var productToReturn = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
+            return productToReturn;
         }
+        public async Task<ProductToReturnDto> GetProductAsync(int id)
+        {
+            var Product = await unitOfWork.GetRepositiry<Product, int>().GetAsync(id);
+            var productToReturn = mapper.Map<ProductToReturnDto>(Product);
+            return productToReturn;
+        }
+
+        public async Task<IEnumerable<BrandDto>> GetBrandsAsync()
+        {
+
+            var brands = await unitOfWork.GetRepositiry<ProductBrand, int>().GetAllAsync();
+            var brandToReturn = mapper.Map<IEnumerable<BrandDto>>(brands);
+            return brandToReturn;
+        }
+
+        public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
+        {
+            var categories = await unitOfWork.GetRepositiry<ProductCategory, int>().GetAllAsync();
+            var categoryToReturn = mapper.Map<IEnumerable<CategoryDto>>(categories);
+            return categoryToReturn;
+        }
+
+
     }
 }

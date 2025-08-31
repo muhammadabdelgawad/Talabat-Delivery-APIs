@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Talabat.Application.Abstraction.DTOs.Products;
+using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Domain.Entities;
 
 namespace Talabat.Application.Maping
@@ -11,6 +12,11 @@ namespace Talabat.Application.Maping
             CreateMap<Product, ProductToReturnDto>()
                   .ForMember(d => d.Brand, O => O.MapFrom(src => src.Brand!.Name))
                   .ForMember(d => d.Category, O => O.MapFrom(src => src.Category!.Name));
+
+            CreateMap<ProductBrand, BrandDto>();
+            CreateMap<ProductCategory, CategoryDto>();
+        
+        
         }
     }
 }

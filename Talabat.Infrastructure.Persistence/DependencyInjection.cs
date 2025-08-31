@@ -10,6 +10,7 @@ namespace Talabat.Infrastructure.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("StoreConnection")));
 
             services.AddScoped<IStoreContextIntiializer, StoreContextInitializer>();
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork.UnitOfWork));
             return services;
 
         }
