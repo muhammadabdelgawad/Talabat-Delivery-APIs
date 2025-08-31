@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Talabat.Domain.Contracts;
-using Talabat.Infrastructure.Persistence.Data;
-
+using Talabat.Application.Abstraction.Services;
 namespace Talabat.Infrastructure.Persistence
 {
     public static class DependencyInjection
@@ -13,7 +11,7 @@ namespace Talabat.Infrastructure.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("StoreConnection")));
 
             services.AddScoped<IStoreContextIntiializer, StoreContextInitializer>();
-           // services.AddScoped(typeof(IStoreContextIntiializer), typeof(StoreContextInitializer));
+            services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
             return services;
 
         }
