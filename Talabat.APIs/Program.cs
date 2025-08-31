@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using Talabat.APIs.Extentions;
+using Talabat.Application;
 using Talabat.Infrastructure.Persistence;
-using Talabat.Infrastructure.Persistence.Data;
+
 namespace Talabat.APIs
 {
     public class Program
@@ -17,7 +17,7 @@ namespace Talabat.APIs
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPersistenceServices(builder.Configuration);
-          //  builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationServices();
 
             #endregion
 
