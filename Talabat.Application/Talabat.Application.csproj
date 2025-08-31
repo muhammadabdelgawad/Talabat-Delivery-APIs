@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Talabat.Domain\Talabat.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappingg\" />
+  </ItemGroup>
+
 </Project>
