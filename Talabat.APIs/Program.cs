@@ -36,9 +36,10 @@ namespace Talabat.APIs
                 app.UseSwaggerUI();
             }
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
-            app.UseSwagger();
+            
 
             app.MapControllers();
 
