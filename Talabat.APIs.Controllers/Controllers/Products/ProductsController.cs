@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Controllers.Base;
 using Talabat.Application.Abstraction.DTOs.Products;
+using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Application.Abstraction.Services;
 
 namespace Talabat.APIs.Controllers.Controllers.Products
@@ -21,6 +22,20 @@ namespace Talabat.APIs.Controllers.Controllers.Products
             if (product == null)
                 return NotFound();
             return Ok(product);
+        }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IEnumerable<BrandDto>>> GetBrands() 
+        {
+            var brands = await serviceManager.ProductService.GetBrandsAsync();
+            return Ok(brands);
+        }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories() 
+        {
+            var categories = await serviceManager.ProductService.GetCategoriesAsync();
+            return Ok(categories);
         }
 
     }
