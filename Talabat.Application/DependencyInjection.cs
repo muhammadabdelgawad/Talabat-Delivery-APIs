@@ -8,9 +8,10 @@ namespace Talabat.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            // services.AddAutoMapper(typeof(MappingProfile));
-            services.AddAutoMapper(mapper => mapper.AddProfile<MappingProfile>());
+            // Fix: Use the correct overload of AddAutoMapper that accepts assembly types
+            services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
             services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
+            services.AddScoped<ProductPictureUlrResolver>();
             return services;
         }
     }
