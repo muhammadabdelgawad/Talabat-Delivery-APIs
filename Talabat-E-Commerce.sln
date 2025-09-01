@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{83DBAD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dashboard", "Dashboard", "{8A530B01-F92F-4B8C-9509-0F581C08EA7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Talabat.APIs.Controllers", "Talabat.APIs.Controllers\Talabat.APIs.Controllers.csproj", "{9FB03017-7E9E-44B3-B060-0749849F7DBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{E1304C76-063F-4017-AC18-8FFFADF5F00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1304C76-063F-4017-AC18-8FFFADF5F00F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1304C76-063F-4017-AC18-8FFFADF5F00F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB03017-7E9E-44B3-B060-0749849F7DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB03017-7E9E-44B3-B060-0749849F7DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB03017-7E9E-44B3-B060-0749849F7DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB03017-7E9E-44B3-B060-0749849F7DBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{E1304C76-063F-4017-AC18-8FFFADF5F00F} = {7EA00BF5-C483-4FF6-978A-FCA186E8CFAB}
 		{83DBAD0D-42B8-4BFC-819F-15906046CE99} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{8A530B01-F92F-4B8C-9509-0F581C08EA7C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{9FB03017-7E9E-44B3-B060-0749849F7DBB} = {3A95092D-0663-4692-966E-F3ABB45F3A73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61B6746F-6C4C-49A1-8F79-E604DE1F3F85}

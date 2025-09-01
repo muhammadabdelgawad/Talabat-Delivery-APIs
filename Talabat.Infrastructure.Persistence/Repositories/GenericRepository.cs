@@ -19,8 +19,16 @@ namespace Talabat.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool withTracking = false)
-         => withTracking ? await _dbContext.Set<TEntity>().ToListAsync()
-                       : await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+        {
+            if (typeof(TEntity) == typeof(Product))
+                return withTracking ?(IEnumerable<TEntity>)await _dbContext.Set<Product>().Include(p => p.Brand).Include(p => p.Category).ToListAsync()
+                                    :(IEnumerable<TEntity>)await _dbContext.Set<Product>().Include(p => p.Brand).Include(p => p.Category).AsNoTracking().ToListAsync();
+
+
+
+            return withTracking ? await _dbContext.Set<TEntity>().ToListAsync()
+                         : await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync(); 
+        }
 
         public async Task<TEntity?> GetAsync(int id) => await _dbContext.Set<TEntity>().FindAsync(id);
 

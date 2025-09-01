@@ -13,7 +13,8 @@ namespace Talabat.APIs
             
             #region Configure Services
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                             .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPersistenceServices(builder.Configuration);
