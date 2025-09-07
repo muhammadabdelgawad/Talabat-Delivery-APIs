@@ -1,18 +1,33 @@
+using Talabat.APIs.Extentions;
+using Talabat.Application;
+using Talabat.Infrastructure.Persistence;
+
 namespace Talabat.APIs
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            
+            #region Configure Services
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                             .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddPersistenceServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+
+            #endregion
 
             var app = builder.Build();
+
+            # region DatabaseInitializer
+            await app.InitializeStoreContextAsync();
+           
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -20,10 +35,10 @@ namespace Talabat.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            app.UseSwagger();
 
             app.MapControllers();
 
