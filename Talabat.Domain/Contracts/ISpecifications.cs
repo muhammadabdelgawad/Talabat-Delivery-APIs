@@ -7,6 +7,7 @@ namespace Talabat.Domain.Contracts
         where TKey: IEquatable<TKey>
     {
         public Expression<Predicate<TEntity>> Criteria { get; set; }
+        public List<Expression<Func<TEntity, object>>> Includes { get; set; }
     }
 }
  
