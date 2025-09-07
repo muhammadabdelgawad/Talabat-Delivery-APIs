@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Talabat.Domain.Contracts
+namespace Talabat.Domain.Contracts.Presistence
 {
     public interface IGenericRepository<TEntity,TKey> 
         where TEntity:BaseEntity<TKey> 

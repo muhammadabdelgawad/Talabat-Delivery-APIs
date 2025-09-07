@@ -1,4 +1,4 @@
-﻿namespace Talabat.Domain.Contracts
+﻿namespace Talabat.Domain.Contracts.Presistence
 {
     public interface IStoreContextIntiializer
     {

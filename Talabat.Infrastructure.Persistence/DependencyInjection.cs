@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Talabat.Domain.Contracts.Presistence;
 namespace Talabat.Infrastructure.Persistence
 {
     public static class DependencyInjection

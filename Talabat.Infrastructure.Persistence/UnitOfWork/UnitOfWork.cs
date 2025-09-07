@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Concurrent;
+using Talabat.Domain.Contracts.Presistence;
 
 namespace Talabat.Infrastructure.Persistence.UnitOfWork
 {

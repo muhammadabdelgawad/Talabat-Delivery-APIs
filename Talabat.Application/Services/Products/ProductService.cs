@@ -2,7 +2,7 @@
 using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Application.Abstraction.Services.Products;
-using Talabat.Domain.Contracts;
+using Talabat.Domain.Contracts.Presistence;
 using Talabat.Domain.Entities;
 
 namespace Talabat.Application.Services.Products

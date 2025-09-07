@@ -2,7 +2,7 @@
 using Talabat.Application.Abstraction.Services;
 using Talabat.Application.Abstraction.Services.Products;
 using Talabat.Application.Services.Products;
-using Talabat.Domain.Contracts;
+using Talabat.Domain.Contracts.Presistence;
 namespace Talabat.Application.Services
 {
     public class ServiceManager : IServiceManager
