@@ -7,16 +7,15 @@ namespace Talabat.Domain.Specifications
         where TEntity : BaseEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        public Expression<Predicate<TEntity>>? Criteria { get ; set ; }=null;
-        public List<Expression<Func<TEntity, object>>> Includes { get; set; } = null;
+        public Expression<Func<TEntity, bool>>? Criteria { get ; set ; }=null;
+        public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new();
         public BaseSpecifications()
         {
-            Includes = new List<Expression<Func<TEntity, object>>>();
+            //Includes = new List<Expression<Func<TEntity, object>>>();
         }
         public BaseSpecifications(TKey id)
         {
             Criteria = E => E.Id.Equals(id);
-            Includes = new List<Expression<Func<TEntity, object>>>();
 
         }
     }
