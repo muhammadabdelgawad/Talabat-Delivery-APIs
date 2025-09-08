@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Talabat.Domain.Contracts;
 using Talabat.Domain.Contracts.Presistence;
-using Talabat.Infrastructure.Persistence.Data;
+using Talabat.Infrastructure.Persistence.Repositories.Generic_Repository;
 
 namespace Talabat.Infrastructure.Persistence.Repositories
 {
@@ -29,12 +25,24 @@ namespace Talabat.Infrastructure.Persistence.Repositories
             return withTracking ? await _dbContext.Set<TEntity>().ToListAsync()
                          : await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync(); 
         }
+        public async Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await ApplySpecifications(spec).ToListAsync();
+        }
 
         public async Task<TEntity?> GetAsync(int id) => await _dbContext.Set<TEntity>().FindAsync(id);
 
         public async Task AddAsync(TEntity entity)  =>await _dbContext.Set<TEntity>().AddAsync(entity);
         public void Update(TEntity entity)=> _dbContext.Set<TEntity>().Update(entity);
         public void Delete(TEntity entity) => _dbContext.Set<TEntity>().Remove(entity);
+        public IQueryable<TEntity> ApplySpecifications(ISpecifications<TEntity, TKey> spec)
+        {
+            return SpecificationsEvaluator<TEntity, TKey>.GetQuery(_dbContext.Set<TEntity>(), spec);
+        }
 
+        public async Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await ApplySpecifications(spec).FirstOrDefaultAsync();
+        }
     }
 }

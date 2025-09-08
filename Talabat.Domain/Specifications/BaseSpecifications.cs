@@ -1,13 +1,14 @@
 ﻿using System.Linq.Expressions;
+using System.Net.Security;
 using Talabat.Domain.Contracts;
 
 namespace Talabat.Domain.Specifications
 {
-    internal class BaseSpecifications<TEntity, TKey> : ISpecifications<TEntity, TKey>
+    public class BaseSpecifications<TEntity, TKey> : ISpecifications<TEntity, TKey>
         where TEntity : BaseEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        public Expression<Func<TEntity, bool>>? Criteria { get ; set ; }=null;
+        public Expression<Func<TEntity, bool>>? Criteria { get; set; } = null;
         public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new();
         public BaseSpecifications()
         {
@@ -18,5 +19,13 @@ namespace Talabat.Domain.Specifications
             Criteria = E => E.Id.Equals(id);
 
         }
+        #region Helper Methods
+
+        private protected virtual void AddIncludes()
+        {
+            
+        }
+        #endregion
+
     }
 }

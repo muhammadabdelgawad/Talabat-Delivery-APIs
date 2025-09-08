@@ -11,6 +11,8 @@ namespace Talabat.Domain.Contracts.Presistence
         where TKey: IEquatable<TKey>
     {
         Task<IEnumerable<TEntity>> GetAllAsync(bool withTracking = false);
+        Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecifications<TEntity, TKey> spec);
+        Task<TEntity> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec);
         Task<TEntity?> GetAsync(int id);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);

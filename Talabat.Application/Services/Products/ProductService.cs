@@ -4,6 +4,7 @@ using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Application.Abstraction.Services.Products;
 using Talabat.Domain.Contracts.Presistence;
 using Talabat.Domain.Entities;
+using Talabat.Domain.Specifications.Products;
 
 namespace Talabat.Application.Services.Products
 {
@@ -11,13 +12,18 @@ namespace Talabat.Application.Services.Products
     {
         public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync()
         {
-            var products = await unitOfWork.GetRepositiry<Product, int>().GetAllAsync();
+            var specs = new ProductWithBrandAndCategorySpecifications();
+
+            var products = await unitOfWork.GetRepositiry<Product, int>().GetAllWithSpecAsync(specs);
             var productToReturn = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
             return productToReturn;
         }
         public async Task<ProductToReturnDto> GetProductAsync(int id)
         {
-            var Product = await unitOfWork.GetRepositiry<Product, int>().GetAsync(id);
+            var spec = new ProductWithBrandAndCategorySpecifications(id);
+
+            var Product = await unitOfWork.GetRepositiry<Product, int>().GetWithSpecAsync(spec);
+
             var productToReturn = mapper.Map<ProductToReturnDto>(Product);
             return productToReturn;
         }
