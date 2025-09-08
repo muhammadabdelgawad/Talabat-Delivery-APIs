@@ -10,7 +10,7 @@ namespace Talabat.Application.Services.Products
 {
     public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync()
+        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(string sort)
         {
             var specs = new ProductWithBrandAndCategorySpecifications();
 
