@@ -7,7 +7,7 @@ namespace Talabat.Application.Maping
 {
     internal class MappingProfile : Profile
     {
-        public MappingProfile()
+        public MappingProfile() 
         {
             CreateMap<Product, ProductToReturnDto>()
                   .ForMember(d => d.Brand, O => O.MapFrom(src => src.Brand!.Name))
@@ -20,3 +20,4 @@ namespace Talabat.Application.Maping
         }
     }
 }
+ 
