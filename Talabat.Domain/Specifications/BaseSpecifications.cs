@@ -14,7 +14,11 @@ namespace Talabat.Domain.Specifications
 
         public BaseSpecifications()
         {
-            //Includes = new List<Expression<Func<TEntity, object>>>();
+           
+        }
+        public BaseSpecifications(Expression<Func<TEntity, bool>> ceriteriaExpression)
+        {
+            Criteria = ceriteriaExpression;
         }
         public BaseSpecifications(TKey id)
         {

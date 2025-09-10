@@ -3,8 +3,13 @@ namespace Talabat.Domain.Specifications.Products
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandAndCategorySpecifications(string sort)
-            : base()
+        public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId)
+            : base(p =>
+
+                   (!brandId.HasValue || p.BrandId == brandId.Value)
+                   &&
+                   (!categoryId.HasValue || p.CategoryId == categoryId.Value)
+                  )
         {
             AddIncludes();
 
@@ -41,7 +46,7 @@ namespace Talabat.Domain.Specifications.Products
                     AddOrderBy(p => p.Name);
                     break;
             }
-        } 
+        }
         #endregion
     }
 }

@@ -10,9 +10,9 @@ namespace Talabat.Application.Services.Products
 {
     public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(string sort)
+        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(string? sort, int? brandId, int? categoryId)
         {
-            var specs = new ProductWithBrandAndCategorySpecifications(sort);
+            var specs = new ProductWithBrandAndCategorySpecifications(sort,brandId,categoryId);
 
             var products = await unitOfWork.GetRepositiry<Product, int>().GetAllWithSpecAsync(specs);
             var productToReturn = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
