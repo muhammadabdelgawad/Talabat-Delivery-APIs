@@ -25,6 +25,8 @@ namespace Talabat.Domain.Specifications
             Criteria = E => E.Id.Equals(id);
 
         }
+
+
         #region Helper Methods
 
         private protected virtual void AddIncludes()
