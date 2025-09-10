@@ -12,7 +12,7 @@ namespace Talabat.Application.Services.Products
     {
         public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
-            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId);
+            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId , specParams.PageIndex , specParams.PageSize);
 
             var products = await unitOfWork.GetRepositiry<Product, int>().GetAllWithSpecAsync(specs);
             var productToReturn = mapper.Map<IEnumerable<ProductToReturnDto>>(products);

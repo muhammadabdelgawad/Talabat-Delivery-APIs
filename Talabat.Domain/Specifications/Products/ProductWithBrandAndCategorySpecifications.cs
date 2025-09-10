@@ -3,7 +3,8 @@ namespace Talabat.Domain.Specifications.Products
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId)
+        public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId
+            , int pageIndex, int pageSize )
             : base(p =>
 
                    (!brandId.HasValue || p.BrandId == brandId.Value)
@@ -14,6 +15,8 @@ namespace Talabat.Domain.Specifications.Products
             AddIncludes();
 
             AddSorting(sort);
+
+            AddPagination(pageSize* (pageIndex - 1) , pageSize);
 
         }
 
