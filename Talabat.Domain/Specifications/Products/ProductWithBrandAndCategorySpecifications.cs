@@ -12,6 +12,21 @@ namespace Talabat.Domain.Specifications.Products
 
         }
 
+
+        public ProductWithBrandAndCategorySpecifications(int id)
+            : base(id)
+        {
+            AddIncludes();
+        }
+        #region Helper Methods
+
+        private protected override void AddIncludes()
+        {
+            base.AddIncludes();
+            Includes.Add(P => P.Brand!);
+            Includes.Add(P => P.Category!);
+        }
+
         private protected override void AddSorting(string sort)
         {
             switch (sort)
@@ -26,19 +41,7 @@ namespace Talabat.Domain.Specifications.Products
                     AddOrderBy(p => p.Name);
                     break;
             }
-        }
-
-        public ProductWithBrandAndCategorySpecifications(int id)
-            : base(id)
-        {
-            AddIncludes();
-        }
-
-        private protected override void AddIncludes()
-        {
-            base.AddIncludes();
-            Includes.Add(P => P.Brand!);
-            Includes.Add(P => P.Category!);
-        }
+        } 
+        #endregion
     }
 }
