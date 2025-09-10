@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Net.Security;
 using Talabat.Domain.Contracts;
 
 namespace Talabat.Domain.Specifications
@@ -10,6 +9,9 @@ namespace Talabat.Domain.Specifications
     {
         public Expression<Func<TEntity, bool>>? Criteria { get; set; } = null;
         public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new();
+        public Expression<Func<TEntity, object>>? OrderBy { get; set; } = null;
+        public Expression<Func<TEntity, object>>? OrderByDesc { get; set; } = null;
+
         public BaseSpecifications()
         {
             //Includes = new List<Expression<Func<TEntity, object>>>();
@@ -23,8 +25,23 @@ namespace Talabat.Domain.Specifications
 
         private protected virtual void AddIncludes()
         {
-            
+
         }
+
+        private protected virtual void AddOrderBy(Expression<Func<TEntity, object>> orderBy)
+        {
+            OrderBy = orderBy;
+        }
+        private protected virtual void AddOrderByDesc(Expression<Func<TEntity, object>> orderByDesc)
+        {
+            OrderByDesc = orderByDesc;
+        }
+        private protected virtual void AddSorting(string sort)
+        {
+
+        }
+
+
         #endregion
 
     }
