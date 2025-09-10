@@ -1,5 +1,4 @@
-﻿using Talabat.Domain.Contracts;
-using Talabat.Domain.Contracts.Presistence;
+﻿using Talabat.Domain.Contracts.Presistence;
 using Talabat.Infrastructure.Persistence.Repositories.Generic_Repository;
 
 namespace Talabat.Infrastructure.Persistence.Repositories
@@ -43,6 +42,11 @@ namespace Talabat.Infrastructure.Persistence.Repositories
         public async Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec)
         {
             return await ApplySpecifications(spec).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> GetCountAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await ApplySpecifications(spec).CountAsync();
         }
     }
 }

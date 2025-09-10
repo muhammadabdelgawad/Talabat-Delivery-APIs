@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Talabat.Application.Abstraction.Common;
 using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Application.Abstraction.Services.Products;
@@ -10,13 +11,19 @@ namespace Talabat.Application.Services.Products
 {
     public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
+        public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
-            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId , specParams.PageIndex , specParams.PageSize);
+            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize);
 
             var products = await unitOfWork.GetRepositiry<Product, int>().GetAllWithSpecAsync(specs);
-            var productToReturn = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
-            return productToReturn;
+
+            var countSpecs = new ProductWithBrandAndCategorySpecifications(specParams.BrandId, specParams.CategoryId);
+
+            var count = await unitOfWork.GetRepositiry<Product, int>().GetCountAsync(countSpecs);
+
+            var data = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
+
+            return new Pagination<ProductToReturnDto>(specParams.PageIndex, specParams.PageSize,count) { Data = data };
         }
         public async Task<ProductToReturnDto> GetProductAsync(int id)
         {

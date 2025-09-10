@@ -3,8 +3,10 @@ namespace Talabat.Domain.Specifications.Products
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
+
+
         public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId
-            , int pageIndex, int pageSize )
+            , int pageIndex, int pageSize)
             : base(p =>
 
                    (!brandId.HasValue || p.BrandId == brandId.Value)
@@ -16,7 +18,7 @@ namespace Talabat.Domain.Specifications.Products
 
             AddSorting(sort);
 
-            AddPagination(pageSize* (pageIndex - 1) , pageSize);
+            AddPagination(pageSize * (pageIndex - 1), pageSize);
 
         }
 
@@ -25,6 +27,17 @@ namespace Talabat.Domain.Specifications.Products
             : base(id)
         {
             AddIncludes();
+        }
+
+        public ProductWithBrandAndCategorySpecifications(int? brandId, int? categoryId)
+            : base(p =>
+
+                   (!brandId.HasValue || p.BrandId == brandId.Value)
+                   &&
+                   (!categoryId.HasValue || p.CategoryId == categoryId.Value)
+                  )
+        {
+
         }
         #region Helper Methods
 
