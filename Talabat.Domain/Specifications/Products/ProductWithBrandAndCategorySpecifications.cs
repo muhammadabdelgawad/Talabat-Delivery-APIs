@@ -6,10 +6,11 @@ namespace Talabat.Domain.Specifications.Products
 
 
         public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId
-            , int pageIndex, int pageSize)
+            , int pageIndex, int pageSize, string? search)
             : base(p =>
-
-                   (!brandId.HasValue || p.BrandId == brandId.Value)
+                   (string.IsNullOrEmpty(search) || p.Name.ToUpper().Contains(search))
+                   &&
+                  (!brandId.HasValue || p.BrandId == brandId.Value)
                    &&
                    (!categoryId.HasValue || p.CategoryId == categoryId.Value)
                   )
