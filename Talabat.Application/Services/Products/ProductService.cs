@@ -18,7 +18,8 @@ namespace Talabat.Application.Services.Products
 
             var products = await unitOfWork.GetRepositiry<Product, int>().GetAllWithSpecAsync(specs);
 
-            var countSpecs = new ProductWithBrandAndCategorySpecifications(specParams.BrandId, specParams.CategoryId);
+            var countSpecs = new ProductWithBrandAndCategorySpecifications(specParams.BrandId,
+                specParams.CategoryId,specParams.Search);
 
             var count = await unitOfWork.GetRepositiry<Product, int>().GetCountAsync(countSpecs);
 

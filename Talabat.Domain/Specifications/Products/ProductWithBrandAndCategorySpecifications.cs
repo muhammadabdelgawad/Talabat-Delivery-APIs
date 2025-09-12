@@ -8,7 +8,7 @@ namespace Talabat.Domain.Specifications.Products
         public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId
             , int pageIndex, int pageSize, string? search)
             : base(p =>
-                   (string.IsNullOrEmpty(search) || p.Name.ToUpper().Contains(search))
+                   (string.IsNullOrEmpty(search) || p.NormalizedName.Contains(search))
                    &&
                   (!brandId.HasValue || p.BrandId == brandId.Value)
                    &&
@@ -30,9 +30,10 @@ namespace Talabat.Domain.Specifications.Products
             AddIncludes();
         }
 
-        public ProductWithBrandAndCategorySpecifications(int? brandId, int? categoryId)
+        public ProductWithBrandAndCategorySpecifications(int? brandId, int? categoryId, string? search)
             : base(p =>
-
+                   (string.IsNullOrEmpty(search) || p.NormalizedName.Contains(search))
+                   &&
                    (!brandId.HasValue || p.BrandId == brandId.Value)
                    &&
                    (!categoryId.HasValue || p.CategoryId == categoryId.Value)
