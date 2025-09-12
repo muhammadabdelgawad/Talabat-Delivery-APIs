@@ -13,7 +13,8 @@ namespace Talabat.Application.Services.Products
     {
         public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
-            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize);
+            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId,
+                specParams.CategoryId, specParams.PageIndex, specParams.PageSize, specParams.Search);
 
             var products = await unitOfWork.GetRepositiry<Product, int>().GetAllWithSpecAsync(specs);
 
