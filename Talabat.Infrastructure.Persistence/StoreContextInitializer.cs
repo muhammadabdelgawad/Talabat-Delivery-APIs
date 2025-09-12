@@ -1,7 +1,4 @@
 ﻿using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using Talabat.Domain.Contracts.Presistence;
-using Talabat.Infrastructure.Persistence.Data;
 
 namespace Talabat.Infrastructure.Persistence
 {

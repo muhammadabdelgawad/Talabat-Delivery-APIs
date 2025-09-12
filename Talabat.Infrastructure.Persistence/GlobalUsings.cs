@@ -6,3 +6,4 @@ global using Talabat.Infrastructure.Persistence.Data.Configurations.Base;
 global using Talabat.Domain.Contracts;
 global using Talabat.Infrastructure.Persistence.Data;
 global using Talabat.Infrastructure.Persistence.Repositories;
+global using Talabat.Domain.Contracts.Presistence;

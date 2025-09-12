@@ -1,23 +1,38 @@
 ﻿using AutoMapper;
+using Talabat.Application.Abstraction.Common;
 using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Application.Abstraction.Services.Products;
 using Talabat.Domain.Contracts.Presistence;
 using Talabat.Domain.Entities;
+using Talabat.Domain.Specifications.Products;
 
 namespace Talabat.Application.Services.Products
 {
     public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync()
+        public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
-            var products = await unitOfWork.GetRepositiry<Product, int>().GetAllAsync();
-            var productToReturn = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
-            return productToReturn;
+            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId,
+                specParams.CategoryId, specParams.PageIndex, specParams.PageSize, specParams.Search);
+
+            var products = await unitOfWork.GetRepositiry<Product, int>().GetAllWithSpecAsync(specs);
+
+            var countSpecs = new ProductWithBrandAndCategorySpecifications(specParams.BrandId,
+                specParams.CategoryId,specParams.Search);
+
+            var count = await unitOfWork.GetRepositiry<Product, int>().GetCountAsync(countSpecs);
+
+            var data = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
+
+            return new Pagination<ProductToReturnDto>(specParams.PageIndex, specParams.PageSize,count) { Data = data };
         }
         public async Task<ProductToReturnDto> GetProductAsync(int id)
         {
-            var Product = await unitOfWork.GetRepositiry<Product, int>().GetAsync(id);
+            var spec = new ProductWithBrandAndCategorySpecifications(id);
+
+            var Product = await unitOfWork.GetRepositiry<Product, int>().GetWithSpecAsync(spec);
+
             var productToReturn = mapper.Map<ProductToReturnDto>(Product);
             return productToReturn;
         }
