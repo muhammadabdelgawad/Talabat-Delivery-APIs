@@ -1,5 +1,4 @@
-﻿
-namespace Talabat.APIs.Controllers.Controllers.Errors
+﻿namespace Talabat.APIs.Controllers.Errors
 {
     internal class ApiResponse
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Controllers.Base;
-using Talabat.APIs.Controllers.Controllers.Errors;
+using Talabat.APIs.Controllers.Errors;
 using Talabat.Application.Abstraction.Common;
 using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Products;

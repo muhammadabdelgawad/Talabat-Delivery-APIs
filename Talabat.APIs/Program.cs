@@ -10,11 +10,14 @@ namespace Talabat.APIs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            
+
             #region Configure Services
 
             builder.Services.AddControllers()
-                             .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
+                             .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly)
+                             .ConfigureApiBehaviorOptions(option =>
+                             { option.SuppressModelStateInvalidFilter = true; });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPersistenceServices(builder.Configuration);

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using Talabat.APIs.Controllers.Base;
-using Talabat.APIs.Controllers.Controllers.Errors;
+using Talabat.APIs.Controllers.Errors;
 using Talabat.Application.Abstraction.Services;
 
 namespace Talabat.APIs.Controllers.Controllers.Buggy
@@ -38,6 +38,16 @@ namespace Talabat.APIs.Controllers.Controllers.Buggy
         [HttpGet("bad-request/{id}")]
         public IActionResult GetValidationErrorRequest(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Where(p => p.Value.Errors.Count > 0)
+                    .Select(p => new ValidationError()
+                    {
+                        Field = p.Key,
+                        Errors = p.Value.Errors.Select(e => e.ErrorMessage)
+                    });
+                return BadRequest(new ApiValidationErrorResponse() { Errors = errors });
+            }
             return Ok();
         }
 
