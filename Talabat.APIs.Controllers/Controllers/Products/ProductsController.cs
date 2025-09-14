@@ -7,7 +7,7 @@ using Talabat.Application.Abstraction.Services;
 
 namespace Talabat.APIs.Controllers.Controllers.Products
 {
-    public class ProductsController(IServiceManager serviceManager) : BaseApiController
+    public class ProductsController(IServiceManager serviceManager) : BaseApiController()
     {
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams )
