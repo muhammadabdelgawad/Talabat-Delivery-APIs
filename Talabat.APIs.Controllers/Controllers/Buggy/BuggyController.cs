@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using Talabat.APIs.Controllers.Base;
+using Talabat.APIs.Controllers.Controllers.Errors;
 using Talabat.Application.Abstraction.Services;
 
 namespace Talabat.APIs.Controllers.Controllers.Buggy
@@ -18,7 +19,7 @@ namespace Talabat.APIs.Controllers.Controllers.Buggy
         [HttpGet("not-found")]
         public IActionResult GetNotFoundRequest()
         {
-            return NotFound();
+            return NotFound(new ApiResponse(404));
         }
 
 
@@ -28,13 +29,13 @@ namespace Talabat.APIs.Controllers.Controllers.Buggy
             throw new Exception();
         }
 
-        [HttpGet("bad-request/{id}")]
+        [HttpGet("bad-request")]
         public IActionResult GetBadRequest()
         {
-            return NotFound();
+            return BadRequest(new ApiResponse(400));
         }
 
-        [HttpGet("bad-request")]
+        [HttpGet("bad-request/{id}")]
         public IActionResult GetValidationErrorRequest(int id)
         {
             return Ok();

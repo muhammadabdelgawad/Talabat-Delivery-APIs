@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Controllers.Base;
+using Talabat.APIs.Controllers.Controllers.Errors;
 using Talabat.Application.Abstraction.Common;
 using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Products;
@@ -20,7 +21,7 @@ namespace Talabat.APIs.Controllers.Controllers.Products
         {
             var product = await serviceManager.ProductService.GetProductAsync(id);
             if (product == null)
-                return NotFound();
+                return NotFound(new ApiResponse(404));
             return Ok(product);
         }
 
