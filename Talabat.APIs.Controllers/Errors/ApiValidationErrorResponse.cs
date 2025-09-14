@@ -1,6 +1,6 @@
 ﻿namespace Talabat.APIs.Controllers.Errors
 {
-    internal class ApiValidationErrorResponse(string? message = null) : ApiResponse(400,message)
+    public class ApiValidationErrorResponse(string? message = null) : ApiResponse(400,message)
     {
         public required IEnumerable<ValidationError> Errors { get; set; }
     }

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+using Talabat.APIs.Controllers.Errors;
 using Talabat.APIs.Extentions;
 using Talabat.Application;
 using Talabat.Infrastructure.Persistence;
@@ -16,7 +18,19 @@ namespace Talabat.APIs
             builder.Services.AddControllers()
                              .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly)
                              .ConfigureApiBehaviorOptions(option =>
-                             { option.SuppressModelStateInvalidFilter = true; });
+                             {
+                                 option.SuppressModelStateInvalidFilter = false;
+                                 option.InvalidModelStateResponseFactory = (actionContext) =>
+                                 {
+                                     var errors =actionContext.ModelState.Where(p => p.Value!.Errors.Count > 0)
+                                      .Select(p => new ValidationError()
+                                      {
+                                          Field = p.Key,
+                                          Errors = p.Value!.Errors.Select(e => e.ErrorMessage)
+                                      });
+                                     return new BadRequestObjectResult(new ApiValidationErrorResponse() { Errors = errors });
+                                 };
+                             });
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -29,7 +43,7 @@ namespace Talabat.APIs
 
             # region DatabaseInitializer
             await app.InitializeStoreContextAsync();
-           
+
             #endregion
 
             // Configure the HTTP request pipeline.

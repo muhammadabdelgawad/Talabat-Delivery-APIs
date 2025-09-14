@@ -38,16 +38,6 @@ namespace Talabat.APIs.Controllers.Controllers.Buggy
         [HttpGet("bad-request/{id}")]
         public IActionResult GetValidationErrorRequest(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Where(p => p.Value.Errors.Count > 0)
-                    .Select(p => new ValidationError()
-                    {
-                        Field = p.Key,
-                        Errors = p.Value.Errors.Select(e => e.ErrorMessage)
-                    });
-                return BadRequest(new ApiValidationErrorResponse() { Errors = errors });
-            }
             return Ok();
         }
 

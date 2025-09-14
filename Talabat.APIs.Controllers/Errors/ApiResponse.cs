@@ -1,6 +1,6 @@
 ﻿namespace Talabat.APIs.Controllers.Errors
 {
-    internal class ApiResponse
+    public class ApiResponse
     {
         public int StatusCode { get; set; }
         public string? Message { get; set; }
