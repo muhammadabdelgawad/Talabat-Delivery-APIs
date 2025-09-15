@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains the backend API for an e-commerce application, similar to Talabat. It provides endpoints for retrieving products, brands, and categories, with support for pagination, filtering, and sorting.
+This repository contains the backend API for an Talabat application, similar to Talabat. It provides endpoints for retrieving products, brands, and categories, with support for pagination, filtering, and sorting.
 
 ## Features and Functionality
 
