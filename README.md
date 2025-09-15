@@ -1,4 +1,4 @@
-# Talabat E-Commerce API
+# Talabat API
 
 ## Description
 
