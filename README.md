@@ -28,7 +28,7 @@ This repository contains the backend API for an Talabat application, similar to 
 *   **SQL Server:** The application is configured to use SQL Server as the database.
 *   **AutoMapper:** Used for mapping between domain entities and DTOs.
 *   **.NET 9.0**: Target Framework.
-*   **C# 9.0**: Programming Language.
+*   **C# 13.0**: Programming Language.
 
 ## Prerequisites
 
