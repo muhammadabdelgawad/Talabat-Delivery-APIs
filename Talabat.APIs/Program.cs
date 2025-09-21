@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Controllers.Errors;
 using Talabat.APIs.Extentions;
+using Talabat.APIs.Middlewares;
 using Talabat.Application;
 using Talabat.Infrastructure.Persistence;
 
@@ -46,7 +47,9 @@ namespace Talabat.APIs
 
             #endregion
 
-            // Configure the HTTP request pipeline.
+           
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
