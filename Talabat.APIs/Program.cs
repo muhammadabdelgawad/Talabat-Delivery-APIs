@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
+using Talabat.APIs.Controllers.Errors;
 using Talabat.APIs.Extentions;
+using Talabat.APIs.Middlewares;
 using Talabat.Application;
 using Talabat.Infrastructure.Persistence;
 
@@ -10,11 +13,26 @@ namespace Talabat.APIs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            
+
             #region Configure Services
 
             builder.Services.AddControllers()
-                             .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
+                             .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly)
+                             .ConfigureApiBehaviorOptions(option =>
+                             {
+                                 option.SuppressModelStateInvalidFilter = false;
+                                 option.InvalidModelStateResponseFactory = (actionContext) =>
+                                 {
+                                     var errors =actionContext.ModelState.Where(p => p.Value!.Errors.Count > 0)
+                                      .Select(p => new ValidationError()
+                                      {
+                                          Field = p.Key,
+                                          Errors = p.Value!.Errors.Select(e => e.ErrorMessage)
+                                      });
+                                     return new BadRequestObjectResult(new ApiValidationErrorResponse() { Errors = errors });
+                                 };
+                             });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPersistenceServices(builder.Configuration);
@@ -26,10 +44,12 @@ namespace Talabat.APIs
 
             # region DatabaseInitializer
             await app.InitializeStoreContextAsync();
-           
+
             #endregion
 
-            // Configure the HTTP request pipeline.
+           
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -37,7 +57,8 @@ namespace Talabat.APIs
             }
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-
+            app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
