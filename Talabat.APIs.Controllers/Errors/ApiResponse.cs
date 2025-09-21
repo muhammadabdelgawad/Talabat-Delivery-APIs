@@ -1,4 +1,6 @@
-﻿namespace Talabat.APIs.Controllers.Errors
+﻿using System.Text.Json;
+
+namespace Talabat.APIs.Controllers.Errors
 {
     public class ApiResponse
     {
@@ -21,6 +23,16 @@
                 500 => "Server Error",
                 _ => null
             };
+        }
+
+
+        public override string ToString()
+        {
+            var serializerOptions = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            return JsonSerializer.Serialize(this,serializerOptions);
         }
     }
 }
