@@ -1,5 +1,6 @@
 ﻿
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using Talabat.APIs.Controllers.Errors;
 using Talabat.Application.Exceptions;
 
@@ -19,11 +20,18 @@ namespace Talabat.APIs.Middlewares
             _environment = environment;
 
         }
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                await _next(context);
+                await _next(httpContext);
+
+                //if (httpContext.Response.StatusCode== (int)HttpStatusCode.NotFound)
+                //{
+                //    var response = new ApiResponse((int)HttpStatusCode.NotFound, $"The requested endpoint : {httpContext.Request.Path} Is Not Found");
+
+                //    await httpContext.Response.WriteAsync(response.ToString());
+                //}
             }
             catch (Exception ex)
             {
@@ -36,7 +44,7 @@ namespace Talabat.APIs.Middlewares
 
                 }
 
-                await HandleExceptions(context, ex);
+                await HandleExceptions(httpContext, ex);
             }
         }
 
