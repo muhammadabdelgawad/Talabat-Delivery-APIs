@@ -19,10 +19,8 @@ namespace Talabat.APIs.Controllers.Controllers.Products
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id) 
         {
-            var product = await serviceManager.ProductService.GetProductAsync(id);
-            if (product == null)
-                return NotFound(new ApiResponse(404));
-            return Ok(product);
+            var response = await serviceManager.ProductService.GetProductAsync(id);
+            return Ok(response);
         }
 
         [HttpGet("brands")]
