@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Talabat.Domain.Contracts.Infrastructure;
 using Talabat.Domain.Contracts.Presistence;
 namespace Talabat.Infrastructure.Persistence
 {
@@ -13,6 +14,7 @@ namespace Talabat.Infrastructure.Persistence
 
             services.AddScoped<IStoreContextIntiializer, StoreContextInitializer>();
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork.UnitOfWork));
+          
             return services;
 
         }

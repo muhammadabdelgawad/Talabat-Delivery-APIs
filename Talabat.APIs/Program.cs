@@ -3,6 +3,7 @@ using Talabat.APIs.Controllers.Errors;
 using Talabat.APIs.Extentions;
 using Talabat.APIs.Middlewares;
 using Talabat.Application;
+using Talabat.Infrastructure;
 using Talabat.Infrastructure.Persistence;
 
 namespace Talabat.APIs
@@ -36,6 +37,7 @@ namespace Talabat.APIs
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPersistenceServices(builder.Configuration);
+            builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
 
             #endregion

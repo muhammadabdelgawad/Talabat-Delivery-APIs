@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Talabat.Application.Abstraction.DTOs.Products;
+using Talabat.Application.Abstraction.Models.Basket;
 using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Basket;
 
 namespace Talabat.Application.Maping
 {
@@ -15,6 +17,9 @@ namespace Talabat.Application.Maping
                   .ForMember(d => d.PictureUrl, O => O.MapFrom<ProductPictureUlrResolver>());   
             CreateMap<ProductBrand, BrandDto>();
             CreateMap<ProductCategory, CategoryDto>();
+
+            CreateMap<Basket, BasketDto>().ReverseMap();
+            CreateMap<BasketItem, BasketItemDto>().ReverseMap();
         
         
         }
