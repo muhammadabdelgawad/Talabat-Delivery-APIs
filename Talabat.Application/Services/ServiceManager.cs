@@ -26,7 +26,7 @@ namespace Talabat.Application.Services
         }
         public IProductService ProductService  =>_productService.Value;
 
-        public IBasketService BasketService => throw new NotImplementedException();
+        public IBasketService BasketService => _basketService.Value;
     }
 }
  

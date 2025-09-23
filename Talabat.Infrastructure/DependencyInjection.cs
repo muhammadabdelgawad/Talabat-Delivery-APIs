@@ -14,8 +14,7 @@ namespace Talabat.Infrastructure
             services.AddSingleton(typeof(IConnectionMultiplexer), (serviceProvider) =>
             {
                 var connectionString = configuration.GetConnectionString("Redis");
-                var connectionMuiltiplexerObj= ConnectionMultiplexer.ConnectAsync
-                (connectionString!);
+                var connectionMuiltiplexerObj= ConnectionMultiplexer.Connect(connectionString!);
                 return connectionMuiltiplexerObj;
             });
 

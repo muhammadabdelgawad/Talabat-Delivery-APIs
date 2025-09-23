@@ -18,8 +18,8 @@ namespace Talabat.Application.Maping
             CreateMap<ProductBrand, BrandDto>();
             CreateMap<ProductCategory, CategoryDto>();
 
-            CreateMap<Basket, BasketItemDto>().ReverseMap();
-            CreateMap<BasketItemDto, Basket>().ReverseMap();
+            CreateMap<Basket, BasketDto>().ReverseMap();
+            CreateMap<BasketItem, BasketItemDto>().ReverseMap();
         
         
         }
