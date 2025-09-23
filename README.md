@@ -1,36 +1,41 @@
 # Talabat Delivery APIs
 
-## Description
+## Project Description
 
-This repository contains the backend APIs for the Talabat Delivery application. It provides endpoints for managing products, brands, categories, and handling common errors. The APIs are built using ASP.NET Core and follow a layered architecture with Domain, Application, and Infrastructure layers.
+This repository contains the source code for a set of APIs designed to manage various aspects of a Talabat-like delivery platform. It includes functionalities for handling product catalogs, customer baskets, and error management.
 
 ## Features and Functionality
 
 *   **Product Management:**
-    *   Retrieve a paginated list of products with filtering, sorting, and searching capabilities.
-    *   Retrieve a specific product by its ID.
-    *   Retrieve a list of product brands.
-    *   Retrieve a list of product categories.
+    *   Retrieve a paginated list of products with filtering, sorting, and searching capabilities.  Uses `ProductSpecParams` for specifying parameters.  Implemented in `Talabat.APIs.Controllers/Controllers/Products/ProductsController.cs`.
+    *   Fetch a specific product by its ID.
+    *   Get a list of product brands and categories.
+*   **Basket Management:**
+    *   Retrieve, update, and delete customer baskets.  Uses `BasketDto` for data transfer. Implemented in `Talabat.APIs.Controllers/Basket/BasketController.cs`.
 *   **Error Handling:**
-    *   Global exception handling middleware to catch and log unhandled exceptions.
-    *   Custom error responses for common HTTP status codes (400, 401, 404, 500).
-    *   Endpoint for simulating common errors (e.g., Not Found, Server Error, Bad Request).
-*   **API Versioning:** (Implicit through controller routing - "api/[controller]")
-*   **Database Initialization and Seeding:** Ensures the database is created and seeded with initial data.
+    *   Comprehensive error handling using custom exception middleware (`Talabat.APIs/Middlewares/ExceptionHandlerMiddleware.cs`) and API response structures (`Talabat.APIs.Controllers/Errors/ApiResponse.cs`).
+    *   Specific error routes for common HTTP status codes (400, 401, 404, 500).
+*   **Buggy Controller:**  A dedicated controller (`Talabat.APIs.Controllers/Controllers/Buggy/BuggyController.cs`) to simulate and test various error scenarios (Not Found, Server Error, Bad Request, Unauthorized, Forbidden).
+*   **Model Validation:** API behaviour configured to suppress model state invalid filter by default, which will generate error messages as per `ApiValidationErrorResponse` model.
 
 ## Technology Stack
 
-*   **ASP.NET Core:** Web framework for building the APIs.
-*   **Entity Framework Core:** ORM for interacting with the database.
-*   **SQL Server:** Database used for storing application data.
-*   **AutoMapper:** Object-relational mapper to map domain entities to DTOs.
-*   **.NET 8:** The .NET version that this project is based on.
+*   **.NET:**  ASP.NET Core Web API
+*   **Entity Framework Core:**  ORM for database interactions
+*   **SQL Server:**  Relational database
+*   **Redis:**  In-memory data store for basket management
+*   **AutoMapper:**  Object-object mapper
+*   **StackExchange.Redis:** Redis client for .NET
+*   **Swashbuckle/Swagger:** API documentation and testing
 
 ## Prerequisites
 
-*   .NET 8 SDK or later.
-*   SQL Server instance.
-*   An IDE or text editor (e.g., Visual Studio, VS Code).
+Before you can run this project, ensure you have the following installed:
+
+*   **.NET SDK:** .NET 9.0 or higher.
+*   **SQL Server:**  A running instance of SQL Server.
+*   **Redis Server:** A running instance of Redis server.
+*   **IDE:**  Visual Studio or Visual Studio Code (recommended)
 
 ## Installation Instructions
 
@@ -43,166 +48,154 @@ This repository contains the backend APIs for the Talabat Delivery application. 
 
 2.  **Configure the database connection string:**
 
-    *   Open the `Talabat.APIs/appsettings.json` file.
-    *   Modify the `StoreConnection` connection string to point to your SQL Server instance. Example:
+    *   Open `Talabat.Infrastructure.Persistence/DependencyInjection.cs` and locate the following code:
+
+    ```csharp
+                 options.UseLazyLoadingProxies()
+                         .UseSqlServer(configuration.GetConnectionString("StoreConnection"))
+    ```
+
+    *   Modify the `"StoreConnection"` connection string in `appsettings.json` (or `appsettings.Development.json`) to point to your SQL Server instance.  Example:
 
     ```json
     {
       "ConnectionStrings": {
-        "StoreConnection": "Data Source=your_server;Initial Catalog=TalabatStore;Integrated Security=True;TrustServerCertificate=true"
+        "StoreConnection": "Data Source=YourServerName;Initial Catalog=TalabatStoreDB;Integrated Security=True;TrustServerCertificate=True"
       },
-      "Urls": {
-        "ApiBaseUrl": "https://localhost:7227/"
-      }
     }
     ```
+   * **Configure the Redis Connection String:**
+      * Modify the `"Redis"` connection string in `appsettings.json` (or `appsettings.Development.json`) to point to your Redis server instance. Example:
+    ```json
+     "ConnectionStrings": {
+        "Redis": "localhost"
+      },
+    ```
+    *Configure the `Urls:ApiBaseUrl` in `appsettings.json` (or `appsettings.Development.json`) with the api base url.
 
-    *   Ensure your SQL Server instance has the proper credentials for connecting.
+    ```json
+      "Urls": {
+        "ApiBaseUrl": "https://localhost:7239"
+      }
+    ```
 
 3.  **Apply database migrations:**
 
-    *   Navigate to the `Talabat.APIs` directory in the command line.
-    *   Run the following command to create the database and apply migrations:
-
     ```bash
-    dotnet ef database update --project ../Talabat.Infrastructure.Persistence --startup-project ./
+    cd Talabat.Infrastructure.Persistence
+    dotnet ef database update -s ../Talabat.APIs
     ```
 
-    This command uses the Entity Framework Core tools to apply the migrations defined in the `Talabat.Infrastructure.Persistence` project to your database.
-
-4.  **Build the project:**
+4.  **Run the application:**
 
     ```bash
-    dotnet build Talabat.APIs/Talabat.APIs.csproj
-    ```
-
-5.  **Run the project:**
-
-    ```bash
-    dotnet run --project Talabat.APIs/Talabat.APIs.csproj
+    cd Talabat.APIs
+    dotnet run
     ```
 
 ## Usage Guide
 
-Once the application is running, you can access the APIs through your browser or any API client (e.g., Postman, Insomnia).
+The API endpoints can be accessed through any HTTP client (e.g., Postman, Insomnia, or a web browser).
 
-### Endpoints
+### Product API
 
-#### Products
+*   **Get all products:**
 
-*   **GET /api/Products:** Retrieves a paginated list of products.
-    *   Query Parameters:
-        *   `sort`: Sort order (e.g., "priceAsc", "priceDesc").
-        *   `brandId`: Filter by brand ID.
-        *   `categoryId`: Filter by category ID.
-        *   `pageIndex`: Page number (default: 1).
-        *   `pageSize`: Number of products per page (default: 10, max: 100).
-        *   `search`: Search term for product names.
-    *   Example: `/api/Products?sort=priceDesc&brandId=1&pageIndex=2&pageSize=20`
+    ```
+    GET /api/Products?sort=priceAsc&brandId=1&categoryId=2&pageIndex=1&pageSize=5&search=Product Name
+    ```
 
-*   **GET /api/Products/{id}:** Retrieves a specific product by its ID.
-    *   Example: `/api/Products/1`
+    *   `sort`: Sorting options (`priceAsc`, `priceDesc`, or default by name).
+    *   `brandId`: Filter by brand ID.
+    *   `categoryId`: Filter by category ID.
+    *   `pageIndex`: Page number.
+    *   `pageSize`: Number of products per page.
+    *   `search`: Search term.
 
-*   **GET /api/Products/brands:** Retrieves a list of product brands.
+*   **Get a product by ID:**
 
-*   **GET /api/Products/categories:** Retrieves a list of product categories.
+    ```
+    GET /api/Products/{id}
+    ```
 
-#### Buggy
+*   **Get all brands:**
 
-*   **GET /api/Buggy/not-found:** Returns a 404 Not Found error.
-*   **GET /api/Buggy/server-error:** Throws an exception to simulate a server error.
-*   **GET /api/Buggy/bad-request:** Returns a 400 Bad Request error.
-*   **GET /api/Buggy/bad-request/{id}:** Returns a 200 OK.
-*   **GET /api/Buggy/unauthorized:** Returns a 401 Unauthorized error. Requires authentication.
-*   **GET /api/Buggy/forbidden:** Returns a 403 Forbidden error.
+    ```
+    GET /api/Products/brands
+    ```
 
-#### Errors
+*   **Get all categories:**
 
-*   **GET /Errors/{code}:** Returns a custom error response based on the provided HTTP status code.
+    ```
+    GET /api/Products/categories
+    ```
 
-### Example Request (Get Products)
+### Basket API
 
-```
-GET https://localhost:7227/api/Products?pageIndex=1&pageSize=5&sort=priceAsc
-```
+*   **Get basket by ID:**
 
-### Example Response (Get Products)
+    ```
+    GET /api/Basket/{id}
+    ```
+
+*   **Update basket:**
+
+    ```
+    POST /api/Basket
+    ```
+
+    *   Request body (JSON):
+
+    ```json
+    {
+      "id": "basketId",
+      "items": [
+        {
+          "id": 1,
+          "productName": "Product 1",
+          "pictureUrl": "image1.jpg",
+          "price": 10.99,
+          "quantity": 2,
+          "brand": "BrandA",
+          "category": "CategoryX"
+        }
+      ]
+    }
+    ```
+
+*   **Delete basket:**
+
+    ```
+    DELETE /api/Basket/{id}
+    ```
+
+### Error Handling
+
+The API returns standard HTTP status codes and JSON responses for errors. For example, a "Not Found" error will return a 404 status code and a JSON body like this:
 
 ```json
 {
-  "pageIndex": 1,
-  "pageSize": 5,
-  "count": 21,
-  "data": [
-    {
-      "id": 1,
-      "name": "Product 1",
-      "description": "Description of Product 1",
-      "pictureUrl": "https://localhost:7227//images/products/sb-ang1.png",
-      "price": 18,
-      "brandId": 1,
-      "brand": "Brand 1",
-      "categoryId": 1,
-      "category": "Category 1"
-    },
-    {
-      "id": 2,
-      "name": "Product 2",
-      "description": "Description of Product 2",
-      "pictureUrl": "https://localhost:7227//images/products/sb-ang2.png",
-      "price": 19,
-      "brandId": 2,
-      "brand": "Brand 2",
-      "categoryId": 2,
-      "category": "Category 2"
-    },
-    {
-      "id": 3,
-      "name": "Product 3",
-      "description": "Description of Product 3",
-      "pictureUrl": "https://localhost:7227//images/products/sb-ang3.png",
-      "price": 20,
-      "brandId": 3,
-      "brand": "Brand 3",
-      "categoryId": 3,
-      "category": "Category 3"
-    },
-    {
-      "id": 4,
-      "name": "Product 4",
-      "description": "Description of Product 4",
-      "pictureUrl": "https://localhost:7227//images/products/sb-core1.png",
-      "price": 21,
-      "brandId": 4,
-      "brand": "Brand 4",
-      "categoryId": 4,
-      "category": "Category 4"
-    },
-    {
-      "id": 5,
-      "name": "Product 5",
-      "description": "Description of Product 5",
-      "pictureUrl": "https://localhost:7227//images/products/sb-core2.png",
-      "price": 22,
-      "brandId": 5,
-      "brand": "Brand 5",
-      "categoryId": 5,
-      "category": "Category 5"
-    }
-  ]
+  "statusCode": 404,
+  "message": "Resource found, it was not"
 }
 ```
 
+In development, exception details are included in the API response.
+
 ## API Documentation
 
-Swagger documentation is enabled for this project.  After running the project, you can access the Swagger UI by navigating to `https://localhost:{port}/swagger`, replacing `{port}` with the port number your application is running on.  This provides interactive documentation for all available endpoints.
+Swagger documentation is enabled in the development environment. Access it by navigating to `/swagger` in your browser after running the application. For example: `https://localhost:7239/swagger`
 
 ## Contributing Guidelines
 
-Contributions are welcome! Please follow these guidelines:
+Contributions are welcome! To contribute to this project, follow these steps:
 
 1.  Fork the repository.
 2.  Create a new branch for your feature or bug fix.
-3.  Make your changes and commit them with clear, concise messages.
-4.  Submit a pull request.
+3.  Implement your changes.
+4.  Test your changes thoroughly.
+5.  Submit a pull request.
 
+## License Information
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
