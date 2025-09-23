@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using Talabat.Domain.Contracts.Infrastructure;
+using Talabat.Infrastructure.Redis_Repository;
 
 namespace Talabat.Infrastructure
 {
@@ -16,6 +18,8 @@ namespace Talabat.Infrastructure
                 (connectionString!);
                 return connectionMuiltiplexerObj;
             });
+
+            services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
             return services;
         }
     }
