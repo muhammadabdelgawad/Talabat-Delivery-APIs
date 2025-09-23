@@ -8,11 +8,11 @@ using Talabat.Domain.Entities.Basket;
 
 namespace Talabat.Infrastructure.Persistence.Repositories.Baskets
 {
-    public class BasketService(IBasketRepository basketRepository, IMapper mapper,IConfiguration configuration) : IBasketService
+    public class BasketService(IBasketRepository basketRepository, IMapper mapper, IConfiguration configuration) : IBasketService
     {
         private readonly IBasketRepository _basketRepo = basketRepository;
         private readonly IMapper _mapper = mapper;
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration = configuration; 
 
         public async Task<BasketDto> GetCustomerBasket(string id)
         {
@@ -22,15 +22,14 @@ namespace Talabat.Infrastructure.Persistence.Repositories.Baskets
             return mappedBasket;
         }
 
-        public async Task<BasketDto> UpdateCustomerBasket(BasketDto basket)
+        public async Task<BasketDto> UpdateCustomerBasket(BasketDto basket) 
         {
              var mappedBasket = _mapper.Map<Basket>(basket);
-             var daysToLive=int.Parse( _configuration.GetSection("RedisSettings")
-                ["TimeToLiveInDays"]!);
-                var updatedBasket = await _basketRepo.UpdateAsync(mappedBasket,
+             var daysToLive = int.Parse(_configuration.GetSection("RedisSettings")["TimeToLiveInDays"]!);
+             var updatedBasket = await _basketRepo.UpdateAsync(mappedBasket,
                     TimeSpan.FromDays(daysToLive));
             if (updatedBasket is null) throw new BadRequestException
-                 ("An Error has occurred ,Cannot update you Basket . please");
+                 ("An Error has occurred ,Cannot update you Basket . please try again ");
 
             return basket;
         }
