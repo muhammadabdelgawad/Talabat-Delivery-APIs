@@ -29,5 +29,13 @@ namespace Talabat.APIs.Controllers.Basket
             return Ok(updatedBasket);
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteBasket(string id)
+        {
+            await _serviceManager.BasketService.DeleteCustomerBasketAsync(id);
+            return NoContent();
+        }
+
+
     }
 }
