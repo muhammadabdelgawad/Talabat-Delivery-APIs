@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Talabat.Domain.Contracts;
+using Talabat.Domain.Contracts.Presistence.Specification;
 
 namespace Talabat.Domain.Specifications
 {

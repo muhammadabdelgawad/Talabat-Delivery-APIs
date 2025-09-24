@@ -1,4 +1,4 @@
-﻿namespace Talabat.Domain.Contracts.Presistence
+﻿namespace Talabat.Domain.Contracts.Presistence.DbIntializers
 {
     public interface IStoreIdentityInializer : IDbIntializer
     {

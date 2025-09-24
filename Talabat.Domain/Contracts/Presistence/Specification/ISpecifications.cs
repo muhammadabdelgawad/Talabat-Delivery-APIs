@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Talabat.Domain.Contracts
+namespace Talabat.Domain.Contracts.Presistence.Specification
 {
     public interface ISpecifications <TEntity ,TKey>
         where TEntity: BaseEntity<TKey>

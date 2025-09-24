@@ -1,4 +1,5 @@
-﻿using Talabat.Domain.Contracts.Presistence;
+﻿using Talabat.Domain.Contracts.Presistence.GenericRepository;
+using Talabat.Domain.Contracts.Presistence.Specification;
 using Talabat.Domain.Entities.Products;
 using Talabat.Infrastructure.Persistence.Repositories.Generic_Repository;
 

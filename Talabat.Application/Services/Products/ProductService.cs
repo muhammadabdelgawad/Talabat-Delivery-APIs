@@ -4,7 +4,7 @@ using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Products;
 using Talabat.Application.Abstraction.Services.Products;
 using Talabat.Application.Exceptions;
-using Talabat.Domain.Contracts.Presistence;
+using Talabat.Domain.Contracts.Presistence.UnitOfWork;
 using Talabat.Domain.Entities.Products;
 using Talabat.Domain.Specifications.Products;
 

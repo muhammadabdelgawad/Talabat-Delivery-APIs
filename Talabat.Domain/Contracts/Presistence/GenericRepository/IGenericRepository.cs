@@ -1,4 +1,6 @@
-﻿namespace Talabat.Domain.Contracts.Presistence
+﻿using Talabat.Domain.Contracts.Presistence.Specification;
+
+namespace Talabat.Domain.Contracts.Presistence.GenericRepository
 {
     public interface IGenericRepository<TEntity,TKey> 
         where TEntity:BaseEntity<TKey> 
