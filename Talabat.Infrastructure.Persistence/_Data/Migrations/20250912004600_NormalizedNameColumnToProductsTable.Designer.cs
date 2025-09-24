@@ -11,7 +11,7 @@ using Talabat.Infrastructure.Persistence.Data;
 
 namespace Talabat.Infrastructure.Persistence.Data.Migrations
 {
-    [DbContext(typeof(StoreContext))]
+    [DbContext(typeof(StoreDbContext))]
     [Migration("20250912004600_NormalizedNameColumnToProductsTable")]
     partial class NormalizedNameColumnToProductsTable
     {

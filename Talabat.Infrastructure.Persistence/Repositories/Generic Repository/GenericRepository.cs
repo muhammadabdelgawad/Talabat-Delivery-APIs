@@ -8,9 +8,9 @@ namespace Talabat.Infrastructure.Persistence.Repositories
       where TEntity : BaseEntity<TKey>
       where TKey : IEquatable<TKey>
     {
-        private readonly StoreContext _dbContext;
+        private readonly StoreDbContext _dbContext;
 
-        public GenericRepository(StoreContext dbContext)
+        public GenericRepository(StoreDbContext dbContext)
         {
             _dbContext = dbContext;
         }

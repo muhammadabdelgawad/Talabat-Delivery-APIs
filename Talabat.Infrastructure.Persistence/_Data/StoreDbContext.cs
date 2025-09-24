@@ -3,13 +3,13 @@ using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Infrastructure.Persistence.Data
 {
-    public class StoreContext :DbContext
+    public class StoreDbContext :DbContext
     {
-        public StoreContext()
+        public StoreDbContext()
         {
                 
         }
-        public StoreContext(DbContextOptions<StoreContext> options) : base(options)
+        public StoreDbContext(DbContextOptions<StoreDbContext> options) : base(options)
         {
 
         }

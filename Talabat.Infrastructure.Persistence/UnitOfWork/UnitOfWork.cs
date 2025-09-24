@@ -7,10 +7,10 @@ namespace Talabat.Infrastructure.Persistence.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly StoreContext _dbContext;
+        private readonly StoreDbContext _dbContext;
         private readonly ConcurrentDictionary<string, object> _repository;
 
-        public UnitOfWork(StoreContext dbContext)
+        public UnitOfWork(StoreDbContext dbContext)
         {
            _dbContext = dbContext;
             _repository = new();

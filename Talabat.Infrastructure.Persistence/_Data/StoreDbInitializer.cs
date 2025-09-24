@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using Talabat.Domain.Entities.Products;
 
-namespace Talabat.Infrastructure.Persistence
+namespace Talabat.Infrastructure.Persistence._Data
 {
-    public class StoreContextInitializer(StoreContext _dbContext) : IStoreContextIntiializer
+    public class StoreDbInitializer(StoreDbContext _dbContext) : IStoreContextIntiializer
     {
        
         public async Task IntiializeAsync()
