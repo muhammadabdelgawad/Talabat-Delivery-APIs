@@ -1,4 +1,6 @@
-﻿namespace Talabat.Infrastructure.Persistence.Data.Configurations.Products
+﻿using Talabat.Domain.Entities.Products;
+
+namespace Talabat.Infrastructure.Persistence.Data.Configurations.Products
 {
     public class ProductConfigurations : BaseAuditableEntityConfigurations<Product, int>
     {

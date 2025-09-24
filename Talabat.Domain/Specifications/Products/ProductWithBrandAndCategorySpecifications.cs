@@ -1,4 +1,4 @@
-﻿using Talabat.Domain.Entities;
+﻿using Talabat.Domain.Entities.Products;
 namespace Talabat.Domain.Specifications.Products
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>

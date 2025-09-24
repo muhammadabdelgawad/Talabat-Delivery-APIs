@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Infrastructure.Persistence
 {

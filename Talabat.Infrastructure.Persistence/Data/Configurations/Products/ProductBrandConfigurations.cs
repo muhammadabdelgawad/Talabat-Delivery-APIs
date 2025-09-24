@@ -1,4 +1,5 @@
 ﻿
+using Talabat.Domain.Entities.Products;
 using Talabat.Infrastructure.Persistence.Data.Configurations.Base;
 
 namespace Talabat.Infrastructure.Persistence.Data.Configurations.Products
