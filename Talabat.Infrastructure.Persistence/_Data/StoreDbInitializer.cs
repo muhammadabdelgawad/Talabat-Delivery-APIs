@@ -3,10 +3,10 @@ using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Infrastructure.Persistence._Data
 {
-    public class StoreDbInitializer(StoreDbContext _dbContext) : IStoreContextIntiializer
+    public class StoreDbInitializer(StoreDbContext _dbContext) : IStoreDbIntializer
     {
        
-        public async Task IntiializeAsync()
+        public async Task IntializeAsync()
         {
             var pendingMigratuiions = _dbContext.Database.GetPendingMigrations();
             if (pendingMigratuiions.Any())

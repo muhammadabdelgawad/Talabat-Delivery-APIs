@@ -9,13 +9,13 @@ namespace Talabat.APIs.Extentions
         {
             using var scope = app.Services.CreateAsyncScope();
             var services = scope.ServiceProvider;
-            var storeContextInitializer = services.GetRequiredService<IStoreContextIntiializer>();
+            var storeContextInitializer = services.GetRequiredService<IStoreDbIntializer>();
 
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
             try
             {
-                await storeContextInitializer.IntiializeAsync();
+                await storeContextInitializer.IntializeAsync();
                 await storeContextInitializer.SeedAsync();
             }
             catch (Exception ex)

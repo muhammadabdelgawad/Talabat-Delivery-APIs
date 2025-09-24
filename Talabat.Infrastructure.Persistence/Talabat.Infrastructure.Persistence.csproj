@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="_Identity\" />
+    <Folder Include="_Identity\Migrations\" />
+    <Folder Include="_Identity\Seed\" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 ﻿namespace Talabat.Domain.Contracts.Presistence
 {
-    public interface IStoreContextIntiializer
+    public interface IDbIntializer
     {
-        Task IntiializeAsync();
+        Task IntializeAsync();
         Task SeedAsync();
     }
 }
