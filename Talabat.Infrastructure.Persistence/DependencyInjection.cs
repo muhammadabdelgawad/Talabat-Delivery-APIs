@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Talabat.Domain.Contracts.Presistence.DbIntializers;
 using Talabat.Domain.Contracts.Presistence.UnitOfWork;
+using Talabat.Domain.Entities.Identity;
 using Talabat.Infrastructure.Persistence._Data;
 using Talabat.Infrastructure.Persistence._Identity;
 namespace Talabat.Infrastructure.Persistence
@@ -16,10 +17,14 @@ namespace Talabat.Infrastructure.Persistence
 
             services.AddScoped<IStoreDbIntializer, StoreDbInitializer>();
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork.UnitOfWork));
+           
 
             services.AddDbContext<StoreIdentityDbConetxt>(options =>
                          options.UseLazyLoadingProxies()
                                 .UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+            services.AddScoped(typeof(IStoreIdentityInializer), typeof(StoreIdentityDbInitializer));
+
+            services.AddIdentityCore<ApplicationUser>();
 
             return services;
 

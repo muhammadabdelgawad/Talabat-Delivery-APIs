@@ -17,6 +17,8 @@ namespace Talabat.Infrastructure.Persistence._Identity.Configurations
                 .WithOne(a => a.User)
                 .HasForeignKey<Address>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.ToTable("Users");
         }
     }
 }

@@ -18,6 +18,9 @@ namespace Talabat.Infrastructure.Persistence._Identity
             builder.ApplyConfiguration(new ApplicationUserConfigurations());
             builder.ApplyConfiguration(new AddressConfigurations());
         }
-    }
+
+
+          
+        }
 }
   
