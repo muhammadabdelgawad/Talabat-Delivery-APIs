@@ -47,13 +47,16 @@ namespace Talabat.APIs.Middlewares
             switch (ex)
             {
                 case NotFoundException:
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     response = new ApiResponse((int)HttpStatusCode.NotFound);
                     break;
                 case BadRequestException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response = new ApiResponse((int)HttpStatusCode.BadRequest);
-
+                    break;
+                case UnAuthorizedException:
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    response = new ApiResponse((int)HttpStatusCode.Unauthorized);
                     break;
                 default:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
