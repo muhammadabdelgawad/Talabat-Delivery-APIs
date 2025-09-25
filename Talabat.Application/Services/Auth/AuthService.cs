@@ -34,9 +34,27 @@ namespace Talabat.Application.Services.Auth
 
         
 
-        public Task<RegisterDto> RegisterAsync(RegisterDto model)
+        public async Task<UserDto> RegisterAsync(RegisterDto model)
         {
-            throw new NotImplementedException();
+           var user = new ApplicationUser
+           {
+               DisplayName = model.DisplayName,
+               Email = model.Email,
+               UserName = model.UserName,
+               PhoneNumber = model.PhoneNumber
+           };
+            var result = await userManager.CreateAsync(user, model.Password);
+
+            if(!result.Succeeded)throw new ValidationException() {Errors= result.Errors.Select(e=>e.Description) };
+            
+            var reponse = new UserDto
+            {
+                Id = user.Id,
+                DisplayName = user.DisplayName,
+                Email = user.Email!,
+                Token = "Will Be Soon"
+            };
+            return reponse;
         }
     }
 }

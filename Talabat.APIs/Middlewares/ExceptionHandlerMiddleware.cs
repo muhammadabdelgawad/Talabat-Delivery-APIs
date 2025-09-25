@@ -50,6 +50,10 @@ namespace Talabat.APIs.Middlewares
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     response = new ApiResponse((int)HttpStatusCode.NotFound);
                     break;
+                case ValidationException validationException:
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response = new ApiValidationErrorResponse( ex.Message) { Errors = (IEnumerable<ValidationError>)validationException.Errors };
+                    break;
                 case BadRequestException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response = new ApiResponse((int)HttpStatusCode.BadRequest);

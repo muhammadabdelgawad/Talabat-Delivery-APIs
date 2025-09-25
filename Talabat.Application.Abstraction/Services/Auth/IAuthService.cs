@@ -5,7 +5,7 @@ namespace Talabat.Application.Abstraction.Services.Auth
     public interface IAuthService
     {
         Task<UserDto> loginAsync(LoginDto model);
-        Task<RegisterDto> RegisterAsync(RegisterDto model);
+        Task<UserDto> RegisterAsync(RegisterDto model);
 
     }
 }
