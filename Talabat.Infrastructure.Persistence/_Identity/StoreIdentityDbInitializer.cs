@@ -5,7 +5,7 @@ using Talabat.Infrastructure.Persistence.Common;
 
 namespace Talabat.Infrastructure.Persistence._Identity
 {
-    public class StoreIdentityDbInitializer(StoreDbContext _dbContext ,UserManager<ApplicationUser> _userManager) : DbInitializer(_dbContext), IStoreIdentityInializer
+    public class StoreIdentityDbInitializer(StoreIdentityDbConetxt _dbContext ,UserManager<ApplicationUser> _userManager) : DbInitializer(_dbContext), IStoreIdentityInializer
     {
         public override async Task SeedAsync()
         {

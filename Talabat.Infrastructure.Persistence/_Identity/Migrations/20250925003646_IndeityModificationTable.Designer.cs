@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Talabat.Infrastructure.Persistence._Identity;
 
@@ -11,9 +12,11 @@ using Talabat.Infrastructure.Persistence._Identity;
 namespace Talabat.Infrastructure.Persistence._Identity.Migrations
 {
     [DbContext(typeof(StoreIdentityDbConetxt))]
-    partial class StoreIdentityDbConetxtModelSnapshot : ModelSnapshot
+    [Migration("20250925003646_IndeityModificationTable")]
+    partial class IndeityModificationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
