@@ -9,15 +9,18 @@ namespace Talabat.Infrastructure.Persistence._Identity
     {
         public override async Task SeedAsync()
         {
-            var user = new ApplicationUser
+            if (!_userManager.Users.Any())
             {
-                DisplayName = "Muhammad Abdelgawad",
-                UserName = "muhammad.abdelgawad",
-                Email = "muhammad@outlook.com",
-                PhoneNumber = "01000000100"
-            };
+                var user = new ApplicationUser
+                {
+                    DisplayName = "Muhammad Abdelgawad",
+                    UserName = "muhammad.abdelgawad",
+                    Email = "muhammad@outlook.com",
+                    PhoneNumber = "01000000100"
+                };
 
-            await _userManager.CreateAsync(user, "Pa$$w0rd");
+                await _userManager.CreateAsync(user, "Pa$$w0rd");
+            }
 
         }
     }

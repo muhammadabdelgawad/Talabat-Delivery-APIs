@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Talabat.Domain.Entities.Products;
+﻿using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Infrastructure.Persistence.Data
 {

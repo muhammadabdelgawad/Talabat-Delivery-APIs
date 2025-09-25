@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Controllers.Errors;
 using Talabat.APIs.Extentions;
 using Talabat.APIs.Middlewares;
 using Talabat.Application;
-using Talabat.Domain.Entities.Identity;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure.Persistence;
 
@@ -41,26 +39,7 @@ namespace Talabat.APIs
             builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-
-                options.SignIn.RequireConfirmedAccount = true;
-                options.SignIn.RequireConfirmedEmail = true;
-                options.SignIn.RequireConfirmedPhoneNumber = true;
-
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequiredUniqueChars = 2;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-
-                options.Lockout.AllowedForNewUsers = true;
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-            });
-
+            builder.Services.AddIdentityServices();
             #endregion
 
             var app = builder.Build();
