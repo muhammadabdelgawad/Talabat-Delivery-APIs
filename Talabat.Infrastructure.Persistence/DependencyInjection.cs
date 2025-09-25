@@ -22,10 +22,11 @@ namespace Talabat.Infrastructure.Persistence
             services.AddDbContext<StoreIdentityDbConetxt>(options =>
                          options.UseLazyLoadingProxies()
                                 .UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+
+           
+
             services.AddScoped(typeof(IStoreIdentityInializer), typeof(StoreIdentityDbInitializer));
-
-            services.AddIdentityCore<ApplicationUser>();
-
+           
             return services;
 
         }

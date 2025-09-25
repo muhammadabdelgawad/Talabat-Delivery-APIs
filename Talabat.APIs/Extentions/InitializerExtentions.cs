@@ -4,7 +4,7 @@ namespace Talabat.APIs.Extentions
 {
     public static class InitializerExtentions
     {
-        public static async Task<WebApplication> InitializeStoreContextAsync(this WebApplication app)
+        public static async Task<WebApplication> InitializeDbAsync(this WebApplication app)
         {
             using var scope = app.Services.CreateAsyncScope();
             var services = scope.ServiceProvider;
