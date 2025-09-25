@@ -4,7 +4,7 @@ using Talabat.Application.Abstraction.Services;
 using Talabat.Application.Abstraction.Services.Basket;
 using Talabat.Application.Abstraction.Services.Products;
 using Talabat.Application.Services.Products;
-using Talabat.Domain.Contracts.Presistence;
+using Talabat.Domain.Contracts.Presistence.UnitOfWork;
 using Talabat.Infrastructure.Persistence.Repositories.Baskets;
 namespace Talabat.Application.Services
 {

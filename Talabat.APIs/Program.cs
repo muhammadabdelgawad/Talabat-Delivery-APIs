@@ -24,7 +24,7 @@ namespace Talabat.APIs
                                  option.SuppressModelStateInvalidFilter = false;
                                  option.InvalidModelStateResponseFactory = (actionContext) =>
                                  {
-                                     var errors =actionContext.ModelState.Where(p => p.Value!.Errors.Count > 0)
+                                     var errors = actionContext.ModelState.Where(p => p.Value!.Errors.Count > 0)
                                       .Select(p => new ValidationError()
                                       {
                                           Field = p.Key,
@@ -39,13 +39,13 @@ namespace Talabat.APIs
             builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
-
+            builder.Services.AddIdentityServices();
             #endregion
 
             var app = builder.Build();
 
             # region DatabaseInitializer
-            await app.InitializeStoreContextAsync();
+            await app.InitializeDbAsync();
 
             #endregion
 

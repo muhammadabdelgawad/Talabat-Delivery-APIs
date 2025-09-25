@@ -1,20 +1,15 @@
 ﻿using System.Text.Json;
+using Talabat.Domain.Contracts.Presistence.DbIntializers;
+using Talabat.Domain.Entities.Products;
+using Talabat.Infrastructure.Persistence.Common;
 
-namespace Talabat.Infrastructure.Persistence
+namespace Talabat.Infrastructure.Persistence._Data
 {
-    public class StoreContextInitializer(StoreContext _dbContext) : IStoreContextIntiializer
+    public class StoreDbInitializer(StoreDbContext _dbContext) : DbInitializer(_dbContext), IStoreDbIntializer
     {
        
-        public async Task IntiializeAsync()
-        {
-            var pendingMigratuiions = _dbContext.Database.GetPendingMigrations();
-            if (pendingMigratuiions.Any())
-                await _dbContext.Database.MigrateAsync();
 
-            
-        }
-
-        public async Task SeedAsync()
+        public override async Task SeedAsync()
         {
 
             if (!_dbContext.Products.Any())

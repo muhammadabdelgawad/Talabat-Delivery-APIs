@@ -2,8 +2,8 @@
 using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Basket;
 using Talabat.Application.Abstraction.Models.Products;
-using Talabat.Domain.Entities;
 using Talabat.Domain.Entities.Basket;
+using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Application.Maping
 {

@@ -1,6 +1,7 @@
-﻿using Talabat.Domain.Entities;
+﻿using Talabat.Domain.Contracts.Presistence.GenericRepository;
+using Talabat.Domain.Entities;
 
-namespace Talabat.Domain.Contracts.Presistence
+namespace Talabat.Domain.Contracts.Presistence.UnitOfWork
 {
     public interface IUnitOfWork : IAsyncDisposable
     {

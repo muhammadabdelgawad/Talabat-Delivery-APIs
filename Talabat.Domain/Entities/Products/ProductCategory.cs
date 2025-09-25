@@ -1,4 +1,4 @@
-﻿namespace Talabat.Domain.Entities
+﻿namespace Talabat.Domain.Entities.Products
 {
     public class ProductCategory:BaseAuditableEntity<int>
     {

@@ -1,4 +1,6 @@
-﻿namespace Talabat.Infrastructure.Persistence.Repositories.Generic_Repository
+﻿using Talabat.Domain.Contracts.Presistence.Specification;
+
+namespace Talabat.Infrastructure.Persistence.Repositories.Generic_Repository
 {
     internal static class SpecificationsEvaluator<TEntity, TKey>
         where TEntity : BaseEntity<TKey>
