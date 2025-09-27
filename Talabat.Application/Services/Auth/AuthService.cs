@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Talabat.Application.Abstraction.Models.Auth;
 using Talabat.Application.Abstraction.Services.Auth;
 using Talabat.Application.Exceptions;
@@ -32,8 +36,6 @@ namespace Talabat.Application.Services.Auth
             return reponse;
         }
 
-        
-
         public async Task<UserDto> RegisterAsync(RegisterDto model)
         {
            var user = new ApplicationUser
@@ -56,5 +58,38 @@ namespace Talabat.Application.Services.Auth
             };
             return reponse;
         }
+         
+        public async Task<string> GenerateTokenAsync(ApplicationUser user)
+        {
+            var userClaims = await userManager.GetClaimsAsync(user);
+            var rolesAsCalaim = new List<Claim>();
+            
+            var roles = await userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+                rolesAsCalaim.Add(new Claim(ClaimTypes.Role, role.ToString()));
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.PrimarySid,user.Id),
+                new Claim(ClaimTypes.Email,user.Email!),
+                new Claim(ClaimTypes.GivenName,user.DisplayName!),
+            }.Union(userClaims)
+             .Union(rolesAsCalaim);
+
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-256-bit-secret"));
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+           
+            var token = new JwtSecurityToken(
+                issuer: "TalabatIdentity",
+                audience: "TalabatUsers",
+                expires: DateTime.UtcNow.AddMinutes(15),
+                claims: claims,
+                signingCredentials: signingCredentials
+            );
+            
+            return new JwtSecurityTokenHandler().WriteToken(token);  
+
+        }
+
     }
 }

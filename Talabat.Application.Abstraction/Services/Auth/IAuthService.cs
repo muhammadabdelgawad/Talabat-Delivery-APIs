@@ -6,6 +6,6 @@ namespace Talabat.Application.Abstraction.Services.Auth
     {
         Task<UserDto> loginAsync(LoginDto model);
         Task<UserDto> RegisterAsync(RegisterDto model);
-
+         
     }
 }
