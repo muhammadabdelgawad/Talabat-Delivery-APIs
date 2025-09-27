@@ -17,12 +17,11 @@ namespace Talabat.Application
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
             services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
             services.AddScoped<ProductPictureUlrResolver>();
+
+            services.AddScoped(typeof(IBasketService), typeof(BasketService));
             services.AddScoped(typeof(Func<IBasketService>), (serviceProvider) =>
             {
-                var _mapper = serviceProvider.GetRequiredService<IMapper>();
-                var _configuration = serviceProvider.GetRequiredService<IConfiguration>();
-                var _basketRepository = serviceProvider.GetRequiredService<IBasketRepository>();
-                return () => new BasketService(_basketRepository,_mapper, _configuration);
+                return () => serviceProvider.GetRequiredService<IBasketService>;
             });
                 
                 return services;
