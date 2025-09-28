@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Controllers.Base;
-using Talabat.APIs.Controllers.Errors;
 using Talabat.Application.Abstraction.Common;
 using Talabat.Application.Abstraction.DTOs.Products;
 using Talabat.Application.Abstraction.Models.Products;
@@ -10,6 +10,7 @@ namespace Talabat.APIs.Controllers.Controllers.Products
 {
     public class ProductsController(IServiceManager serviceManager) : BaseApiController()
     {
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams )
         {
@@ -22,7 +23,7 @@ namespace Talabat.APIs.Controllers.Controllers.Products
             var response = await serviceManager.ProductService.GetProductAsync(id);
             return Ok(response);
         }
-
+         
         [HttpGet("brands")]
         public async Task<ActionResult<IEnumerable<BrandDto>>> GetBrands() 
         {

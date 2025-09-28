@@ -15,11 +15,11 @@ namespace Talabat.APIs.Controllers.Controllers.Common
         {
             if (code == (int)HttpStatusCode.NotFound)
             {
-                var response = new ApiResponse((int)HttpStatusCode.NotFound, $"The requested endpoint : {Request.Path} Is Not Found");
+                var response = new ApiResponse((int)HttpStatusCode.NotFound, $"The requested endpoint Is Not Found");
 
                return NotFound(response);
             }
-            return StatusCode(code);
+            return StatusCode(code, new ApiResponse(code));
         }
 
     }
