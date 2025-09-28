@@ -1,4 +1,5 @@
-﻿using Talabat.Application.Abstraction.Models.Auth;
+﻿using System.Security.Claims;
+using Talabat.Application.Abstraction.Models.Auth;
 
 namespace Talabat.Application.Abstraction.Services.Auth
 {
@@ -6,6 +7,6 @@ namespace Talabat.Application.Abstraction.Services.Auth
     {
         Task<UserDto> loginAsync(LoginDto model);
         Task<UserDto> RegisterAsync(RegisterDto model);
-         
+        Task<UserDto> GetCurrentUserAsync(ClaimsPrincipal claimsPrincipal);
     }
 }
