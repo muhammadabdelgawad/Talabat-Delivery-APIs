@@ -3,7 +3,7 @@ using Talabat.APIs.Controllers.Base;
 using Talabat.Application.Abstraction.Models.Basket;
 using Talabat.Application.Abstraction.Services;
 
-namespace Talabat.APIs.Controllers.Basket
+namespace Talabat.APIs.Controllers.Controllers.Basket
 {
     public class BasketController :BaseApiController
     {
