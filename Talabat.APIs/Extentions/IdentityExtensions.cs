@@ -35,10 +35,10 @@ namespace Talabat.APIs.Extentions
 
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
-            services.AddScoped(typeof(Func<IAuthService>), (serviceProvider =>
+            services.AddScoped(typeof(Func<IAuthService>), sp =>
             {
-                return () => serviceProvider.GetService<IAuthService>();
-            }));
+                return () => sp.GetRequiredService<IAuthService>();
+            });
 
             return services;
         }

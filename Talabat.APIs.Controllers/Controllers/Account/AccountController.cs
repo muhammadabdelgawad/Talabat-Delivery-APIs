@@ -1,0 +1,25 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Talabat.APIs.Controllers.Base;
+using Talabat.Application.Abstraction.Models.Auth;
+using Talabat.Application.Abstraction.Services;
+
+namespace Talabat.APIs.Controllers.Controllers.Account
+{
+    public class AccountController(IServiceManager serviceManager) :BaseApiController
+    {
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> Register(RegisterDto model)
+        {
+            var result = await serviceManager.AuthService.RegisterAsync(model);
+            return Ok(result);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDto>> Login(LoginDto model) 
+        {
+            var result = await serviceManager.AuthService.loginAsync(model);
+            return Ok(result);
+        }
+
+    }
+}

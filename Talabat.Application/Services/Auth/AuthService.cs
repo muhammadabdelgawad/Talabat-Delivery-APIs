@@ -20,7 +20,7 @@ namespace Talabat.Application.Services.Auth
 
             var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, true);
 
-            if (result.IsNotAllowed) throw new UnAuthorizedException("Please Confirm Your Account");
+            if (result.IsNotAllowed)  throw new UnAuthorizedException("Please Confirm Your Account");
 
             if (result.IsLockedOut) throw new UnAuthorizedException("Account Is Locked");
 
@@ -54,7 +54,7 @@ namespace Talabat.Application.Services.Auth
                 Id = user.Id,
                 DisplayName = user.DisplayName,
                 Email = user.Email!,
-                Token = "Will Be Soon"
+                Token = await GenerateTokenAsync(user)
             };
             return reponse;
         }
@@ -76,7 +76,7 @@ namespace Talabat.Application.Services.Auth
             }.Union(userClaims)
              .Union(rolesAsCalaim);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-256-bit-secret"));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-256-bit-secrettttoowdiwdittttttttt"));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
            
             var token = new JwtSecurityToken(
