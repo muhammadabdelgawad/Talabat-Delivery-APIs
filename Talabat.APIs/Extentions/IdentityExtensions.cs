@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Talabat.Application.Abstraction.Models.Auth;
 using Talabat.Application.Abstraction.Services.Auth;
 using Talabat.Application.Services.Auth;
 using Talabat.Domain.Entities.Identity;
@@ -8,8 +9,9 @@ namespace Talabat.APIs.Extentions
 {
     public static class IdentityExtensions
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services)
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtSettings>(configuration.GetSection("jwtSettings"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
              {

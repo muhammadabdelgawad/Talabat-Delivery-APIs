@@ -39,7 +39,7 @@ namespace Talabat.APIs
             builder.Services.AddPersistenceServices(builder.Configuration);
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
-            builder.Services.AddIdentityServices();
+            builder.Services.AddIdentityServices(builder.Configuration);
             #endregion
 
             var app = builder.Build();

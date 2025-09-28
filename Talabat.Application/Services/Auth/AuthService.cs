@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,9 +10,13 @@ using Talabat.Application.Exceptions;
 using Talabat.Domain.Entities.Identity;
 
 namespace Talabat.Application.Services.Auth
-{
-    public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)  : IAuthService
+ {
+    public class AuthService(
+        IOptions<JwtSettings> jwtSettings,
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager)  : IAuthService
     {
+        private readonly JwtSettings _jwtSettings = jwtSettings.Value;
         public async Task<UserDto> loginAsync(LoginDto model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
@@ -101,13 +106,13 @@ namespace Talabat.Application.Services.Auth
             }.Union(userClaims)
              .Union(rolesAsCalaim);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-256-bit-secrettttoowdiwdittttttttt"));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.key));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
            
             var token = new JwtSecurityToken(
-                issuer: "TalabatIdentity",
-                audience: "TalabatUsers",
-                expires: DateTime.UtcNow.AddMinutes(15),
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
                 claims: claims,
                 signingCredentials: signingCredentials
             );
