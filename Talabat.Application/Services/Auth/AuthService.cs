@@ -31,32 +31,57 @@ namespace Talabat.Application.Services.Auth
                 Id = user.Id,
                 DisplayName = user.DisplayName,
                 Email = user.Email!,
-                Token = "Will Be Soon"
+                Token = await GenerateTokenAsync(user)
             };
             return reponse;
         }
 
         public async Task<UserDto> RegisterAsync(RegisterDto model)
         {
-           var user = new ApplicationUser
-           {
-               DisplayName = model.DisplayName,
-               Email = model.Email,
-               UserName = model.UserName,
-               PhoneNumber = model.PhoneNumber
-           };
+          
+            var existingUser = await userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                throw new ValidationException() { Errors = new[] { $"Email '{model.Email}' is already registered" } };
+            }
+
+            
+            existingUser = await userManager.FindByNameAsync(model.UserName);
+            if (existingUser != null)
+            {
+                throw new ValidationException() { Errors = new[] { $"Username '{model.UserName}' is already taken" } };
+            }           
+
+            var user = new ApplicationUser
+            {
+                DisplayName = model.DisplayName,
+                Email = model.Email,
+                UserName = model.UserName,
+                PhoneNumber = model.PhoneNumber,
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
             var result = await userManager.CreateAsync(user, model.Password);
 
-            if(!result.Succeeded)throw new ValidationException() {Errors= result.Errors.Select(e=>e.Description) };
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => $"{e.Code}: {e.Description}").ToList();
+                
+                throw new ValidationException()
+                {
+                    Errors = errors
+                };
+            }
             
-            var reponse = new UserDto
+            var response = new UserDto
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName,
                 Email = user.Email!,
                 Token = await GenerateTokenAsync(user)
             };
-            return reponse;
+            return response;
         }
          
         public async Task<string> GenerateTokenAsync(ApplicationUser user)
@@ -93,3 +118,4 @@ namespace Talabat.Application.Services.Auth
 
     }
 }
+        

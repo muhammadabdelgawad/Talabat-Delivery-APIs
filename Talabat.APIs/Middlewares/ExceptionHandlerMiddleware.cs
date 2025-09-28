@@ -1,5 +1,4 @@
-﻿
-using System.Net;
+﻿using System.Net;
 using System.Reflection.Metadata.Ecma335;
 using Talabat.APIs.Controllers.Errors;
 using Talabat.Application.Exceptions;
@@ -52,7 +51,19 @@ namespace Talabat.APIs.Middlewares
                     break;
                 case ValidationException validationException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    response = new ApiValidationErrorResponse( ex.Message) { Errors = (IEnumerable<ValidationError>)validationException.Errors };
+                    
+                   
+                    var validationErrors = validationException.Errors?.Select(errorMessage => 
+                        new ValidationError 
+                        { 
+                            Field = GetFieldFromErrorMessage(errorMessage), 
+                            Errors = new[] { errorMessage } 
+                        }) ?? Enumerable.Empty<ValidationError>();
+                    
+                    response = new ApiValidationErrorResponse(ex.Message) 
+                    { 
+                        Errors = validationErrors 
+                    };
                     break;
                 case BadRequestException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -71,9 +82,16 @@ namespace Talabat.APIs.Middlewares
             }
             context.Response.ContentType = "application/json";
 
-
-
             await context.Response.WriteAsync(response.ToString());
+        }
+
+        private string GetFieldFromErrorMessage(string errorMessage)
+        {
+            if (errorMessage.Contains("Email", StringComparison.OrdinalIgnoreCase)) return "Email";
+            if (errorMessage.Contains("Username", StringComparison.OrdinalIgnoreCase)) return "UserName";
+            if (errorMessage.Contains("Password", StringComparison.OrdinalIgnoreCase)) return "Password";
+            if (errorMessage.Contains("Phone", StringComparison.OrdinalIgnoreCase)) return "PhoneNumber";
+            return "General";
         }
     }
 }
