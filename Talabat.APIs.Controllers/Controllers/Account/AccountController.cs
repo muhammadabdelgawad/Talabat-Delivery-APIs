@@ -38,5 +38,14 @@ namespace Talabat.APIs.Controllers.Controllers.Account
             var result = await serviceManager.AuthService.GetUserAddressAsync(User);
             return Ok(result);
         }
+
+        [HttpPut("address")]
+        [Authorize]
+        public async Task<ActionResult> UpdateUserAddress(AddressDto addressDto)
+        {
+            var result = await serviceManager.AuthService.UpdateUserAddressAsync(User, addressDto);
+            return Ok(result);
+        }
     }
 }
+ 

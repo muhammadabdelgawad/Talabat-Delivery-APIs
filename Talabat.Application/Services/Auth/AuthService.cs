@@ -139,12 +139,28 @@ namespace Talabat.Application.Services.Auth
             };
         }
 
-        public async Task<AddressDto> GetUserAddressAsync(ClaimsPrincipal claimsPrincipal)
+        public async Task<AddressDto?> GetUserAddressAsync(ClaimsPrincipal claimsPrincipal)
         {
             var user = await userManager.FindUserWithAddress(claimsPrincipal);
             var address= mapper.Map<AddressDto>(user!.Address);
               
             return address;
+        }
+
+        public async Task<AddressDto> UpdateUserAddressAsync(ClaimsPrincipal claimsPrincipal, AddressDto addressDto)
+        {
+            var updatedAddress = mapper.Map<Address>(addressDto);
+
+            var user = await  userManager.FindUserWithAddress(claimsPrincipal);
+
+            if (user.Address is not null)
+                updatedAddress.Id = user.Address.Id;
+
+            user!.Address = updatedAddress;
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded) throw new BadRequestException(result.Errors.Select(error => error.Description)
+                                                                              .Aggregate((x, y) => $"{x},{y}"));
+            return addressDto;
         }
     }
 }

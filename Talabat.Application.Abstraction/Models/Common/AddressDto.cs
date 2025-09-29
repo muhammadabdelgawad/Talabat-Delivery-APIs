@@ -8,7 +8,7 @@ namespace Talabat.Application.Abstraction.Models.Common
 {
     public class AddressDto
     {
-        public int Id { get; set; }
+     
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public required string Street { get; set; }
