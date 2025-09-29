@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Controllers.Base;
 using Talabat.Application.Abstraction.Models.Auth;
+using Talabat.Application.Abstraction.Models.Common;
 using Talabat.Application.Abstraction.Services;
 
 namespace Talabat.APIs.Controllers.Controllers.Account
@@ -27,6 +28,14 @@ namespace Talabat.APIs.Controllers.Controllers.Account
         public async Task<ActionResult<UserDto>> GetCurrentUser() 
         {
             var result = await serviceManager.AuthService.GetCurrentUserAsync(User);
+            return Ok(result);
+        }
+
+        [HttpGet("address")]
+        [Authorize]
+        public async Task<ActionResult<AddressDto>> GetUserAddress()
+        {
+            var result = await serviceManager.AuthService.GetUserAddressAsync(User);
             return Ok(result);
         }
     }

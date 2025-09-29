@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Talabat.Application.Abstraction.Models.Auth;
+using Talabat.Application.Abstraction.Models.Common;
 using Talabat.Application.Abstraction.Services.Auth;
 using Talabat.Application.Exceptions;
+using Talabat.Application.Extensions;
 using Talabat.Domain.Entities.Identity;
 
 namespace Talabat.Application.Services.Auth
  {
     public class AuthService(
+        IMapper mapper,
         IOptions<JwtSettings> jwtSettings,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager)  : IAuthService
@@ -133,6 +137,14 @@ namespace Talabat.Application.Services.Auth
                 DisplayName = user.DisplayName,
                 Token = await GenerateTokenAsync(user)
             };
+        }
+
+        public async Task<AddressDto> GetUserAddressAsync(ClaimsPrincipal claimsPrincipal)
+        {
+            var user = await userManager.FindUserWithAddress(claimsPrincipal);
+            var address= mapper.Map<AddressDto>(user!.Address);
+              
+            return address;
         }
     }
 }
