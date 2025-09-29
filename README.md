@@ -1,265 +1,193 @@
 # Talabat Delivery APIs
 
-This repository contains the source code for the Talabat Delivery APIs, a set of RESTful APIs designed to manage products, categories, brands, and customer baskets.
+This repository contains the backend APIs for a Talabat-like delivery application. It provides endpoints for managing products, user accounts, and shopping baskets.
 
 ## Features and Functionality
 
-The Talabat Delivery APIs provide the following functionalities:
-
 *   **Product Management:**
-    *   Retrieve a paginated list of products with filtering and sorting options.
-    *   Retrieve a specific product by ID.
-    *   Retrieve a list of product brands.
-    *   Retrieve a list of product categories.
-*   **Basket Management:**
-    *   Retrieve a customer's basket by ID.
-    *   Update a customer's basket.
-    *   Delete a customer's basket.
+    *   Retrieve a paginated list of products with filtering, sorting, and searching.
+    *   Fetch a specific product by ID.
+    *   Get a list of available product brands.
+    *   Get a list of available product categories.
+*   **User Account Management:**
+    *   Register a new user account.
+    *   Log in an existing user.
+    *   Retrieve the current user's information (requires authentication).
+    *   Get the user's address (requires authentication).
+    *   Update the user's address (requires authentication).
+    *   Check if an email address already exists.
+*   **Shopping Basket Management:**
+    *   Retrieve a customer's shopping basket by ID.
+    *   Update a customer's shopping basket.
+    *   Delete a customer's shopping basket.
 *   **Error Handling:**
-    *   Comprehensive error handling with custom API response formats.
-    *   Buggy endpoints to simulate various error scenarios for testing purposes.
-*   **Identity and Authorization:**
-    *   User authentication and authorization using ASP.NET Core Identity.
-    *   Configurable password policies.
-    *   Email confirmation and account lockout features.
-*   **Database Initialization:**
-    *   Automatic database migration and seeding.
+    *   Comprehensive error handling middleware to return standardized API responses for common errors such as:
+        *   400 Bad Request
+        *   401 Unauthorized
+        *   404 Not Found
+        *   500 Server Error
+        *   Validation Errors
 
 ## Technology Stack
 
-*   **ASP.NET Core:** Web framework for building the APIs.
-*   **C#:** Programming language.
-*   **Entity Framework Core (EF Core):** Object-Relational Mapper (ORM) for database interactions.
-*   **SQL Server:** Relational database for storing product and identity data.
-*   **Redis:** In-memory data store for managing customer baskets.
-*   **AutoMapper:** Object-object mapper for DTO transformations.
-*   **Swagger:** API documentation and testing.
-*   **.NET 9.0:** Runtime environment
+*   **ASP.NET Core:**  The backend is built using ASP.NET Core.
+*   **C#:** The primary programming language.
+*   **Entity Framework Core:** Used for database interaction.
+*   **SQL Server:** The relational database used for storing product and user data. Connection string is configured in `appsettings.json`.
+*   **Redis:** Used for storing shopping basket data. Connection string is configured in `appsettings.json`.
+*   **AutoMapper:**  Used for object-to-object mapping between domain entities and DTOs.
+*   **Microsoft Identity:** Used for Authentication and Authorization.
+*   **JWT (JSON Web Tokens):**  Used for user authentication and authorization. JWT settings are configured in the `appsettings.json` file under the `jwtSettings` section.
+*   **StackExchange.Redis:** Redis client library used to interact with Redis server.
 
 ## Prerequisites
 
-Before running the Talabat Delivery APIs, ensure you have the following installed:
+Before you begin, ensure you have met the following requirements:
 
-*   **.NET SDK 9.0:** Download and install the .NET SDK from the official Microsoft website.
-*   **SQL Server:** Install SQL Server and SQL Server Management Studio (SSMS).
-*   **Redis:** Install a local Redis server or have access to a Redis instance.
+*   **.NET SDK:**  Install the .NET SDK (version 8.0 or later).  Download it from [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download).
+*   **SQL Server:** Install SQL Server. You can use SQL Server Express for development.
+*   **Redis:** Install Redis server.
+*   **IDE/Text Editor:**  Visual Studio, Visual Studio Code, or any other suitable C# IDE or text editor.
 
 ## Installation Instructions
 
-1.  **Clone the repository:**
+1.  **Clone the Repository:**
 
     ```bash
     git clone https://github.com/muhammadabdelgawad/Talabat-Delivery-APIs.git
     cd Talabat-Delivery-APIs
     ```
 
-2.  **Update Connection Strings:**
-    Modify the connection strings in `Talabat.APIs/appsettings.json` for `StoreConnection` and `IdentityConnection` to point to your SQL Server instance. Also configure Redis Connection string.
+2.  **Update Database Connection Strings:**
+
+    *   Open the `Talabat.APIs/appsettings.json` file.
+    *   Modify the `StoreConnection` and `IdentityConnection` connection strings to point to your SQL Server instance.  For example:
 
     ```json
-    {
-      "ConnectionStrings": {
-        "StoreConnection": "Server=your_server;Database=TalabatStoreDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True",
-        "IdentityConnection": "Server=your_server;Database=TalabatIdentityDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True",
-        "Redis": "localhost"
-      },
-        "RedisSettings": {
-            "TimeToLiveInDays": "30"
-        },
-        "Urls": {
-            "ApiBaseUrl": "https://localhost:7219/"
-        }
+    "ConnectionStrings": {
+      "StoreConnection": "Server=your_server;Database=TalabatStoreDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True",
+      "IdentityConnection": "Server=your_server;Database=TalabatIdentityDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True",
+      "Redis": "localhost"
     }
     ```
 
+    *   Modify the `Redis` connection string to point to your Redis instance.
+
 3.  **Apply Database Migrations:**
 
-    Open a terminal in the `Talabat.APIs` directory and run the following commands:
+    *   Open a terminal in the `Talabat.Infrastructure.Persistence` directory.
+    *   Run the following commands to apply the EF Core migrations:
 
     ```bash
-    dotnet ef database update -p ../Talabat.Infrastructure.Persistence -s Talabat.APIs
-    dotnet ef database update -p ../Talabat.Infrastructure.Persistence -c StoreIdentityDbConetxt  -s Talabat.APIs
+    dotnet ef database update -c StoreDbContext
+    dotnet ef database update -c StoreIdentityDbConetxt
     ```
 
-    These commands will create the databases and apply the latest migrations.
+4.  **Run the Application:**
 
-## Usage Guide
-
-1.  **Run the application:**
-
-    Open a terminal in the `Talabat.APIs` directory and run the following command:
+    *   Open a terminal in the `Talabat.APIs` directory.
+    *   Run the following command to start the application:
 
     ```bash
     dotnet run
     ```
 
-    This will start the API server.
+    The API will be accessible at `https://localhost:{port}` (the port number will be displayed in the console).
 
-2.  **Access the API endpoints:**
+## Usage Guide
 
-    The API endpoints can be accessed via HTTP requests. You can use tools like Postman or Swagger UI to interact with the APIs.
+After running the application, you can access the API endpoints using tools like Postman, Swagger UI (if enabled), or by integrating them into a client application.
 
-    *   **Swagger UI:** Navigate to `https://localhost:<port>/swagger` in your browser to access the Swagger UI. Replace `<port>` with the port number your application is running on (typically 5001 for HTTPS).
+### API Endpoints
+
+Here are some of the key API endpoints:
+
+*   **Authentication**
+    *   `POST api/Account/register`: Registers a new user.
+        *   Request body: `RegisterDto` (`DisplayName`, `UserName`, `Email`, `PhoneNumber`, `Password`)
+        *   Response body: `UserDto` (`Id`, `DisplayName`, `Email`, `Token`)
+
+    *   `POST api/Account/login`: Logs in an existing user.
+        *   Request body: `LoginDto` (`Email`, `Password`)
+        *   Response body: `UserDto` (`Id`, `DisplayName`, `Email`, `Token`)
+
+    *   `GET api/Account`: Gets the current user (requires authentication).
+        *   Response body: `UserDto` (`Id`, `DisplayName`, `Email`, `Token`)
+
+    *   `GET api/Account/address`: Gets the user's address (requires authentication).
+        *   Response body: `AddressDto` (`FirstName`, `LastName`, `Street`, `City`, `Country`)
+
+    *   `PUT api/Account/address`: Updates the user's address (requires authentication).
+        *   Request body: `AddressDto` (`FirstName`, `LastName`, `Street`, `City`, `Country`)
+
+    *    `GET api/Account/emailexisits?email={email}`: Checks if the email exists.
+
+*   **Products**
+
+    *   `GET api/Products`: Gets a paginated list of products.
+        *   Query parameters:
+            *   `sort`: Sorting order (e.g., `priceAsc`, `priceDesc`).
+            *   `brandId`: Filter by brand ID.
+            *   `categoryId`: Filter by category ID.
+            *   `pageIndex`: Page number.
+            *   `pageSize`: Number of items per page.
+            *    `search`: Search term for product name.
+        *   Response body: `Pagination<ProductToReturnDto>`
+
+    *   `GET api/Products/{id}`: Gets a specific product by ID.
+        *   Response body: `ProductToReturnDto`
+
+    *   `GET api/Products/brands`: Gets a list of product brands.
+        *   Response body: `IEnumerable<BrandDto>`
+
+    *   `GET api/Products/categories`: Gets a list of product categories.
+        *   Response body: `IEnumerable<CategoryDto>`
+
+*   **Basket**
+
+    *   `GET api/Basket?id={id}`: Gets a customer's basket.
+        *   Response body: `BasketDto` (`Id`, `Items` where `Items` is a list of `BasketItemDto`)
+
+    *   `POST api/Basket`: Updates a customer's basket.
+        *   Request body: `BasketDto` (`Id`, `Items` where `Items` is a list of `BasketItemDto`)
+        *   Response body: `BasketDto` (`Id`, `Items` where `Items` is a list of `BasketItemDto`)
+
+    *   `DELETE api/Basket?id={id}`: Deletes a customer's basket.
+
+*   **Buggy (for testing error handling)**
+    *  `GET api/Buggy/not-found`: Simulates a 404 Not Found error.
+    *  `GET api/Buggy/server-error`: Simulates a 500 Server Error.
+    *  `GET api/Buggy/bad-request`: Simulates a 400 Bad Request error.
+    *  `GET api/Buggy/bad-request/{id}`: Simulates a validation error.
+    *  `GET api/Buggy/unauthorized`: Simulates a 401 Unauthorized error (requires authentication).
+    *  `GET api/Buggy/forbidden`: Simulates a 403 Forbidden error.
+
+*   **Errors**
+
+    *   `GET Errors/{Code}`: Generic endpoint for displaying error information based on HTTP status code.
+
+### Authentication
+
+Some endpoints require authentication. To access these endpoints, you'll need to include an `Authorization` header in your request with a valid JWT token.  You can obtain a JWT token by registering a user or logging in.
+
+Example `Authorization` header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
 
 ## API Documentation
 
-### Products API
-
-*   **GET /api/Products:** Retrieves a paginated list of products.
-    *   **Query Parameters:**
-        *   `sort`: Sort order (e.g., `priceAsc`, `priceDesc`).
-        *   `brandId`: Filter by brand ID.
-        *   `categoryId`: Filter by category ID.
-        *   `pageIndex`: Page number (default: 1).
-        *   `pageSize`: Number of items per page (default: 10, max: 100).
-        *    `search`: Search term
-
-    *   **Response:**
-        ```json
-        {
-          "pageIndex": 1,
-          "pageSize": 10,
-          "count": 100,
-          "data": [
-            {
-              "id": 1,
-              "name": "Product Name",
-              "description": "Product Description",
-              "pictureUrl": "https://localhost:7219//images/products/sb-ang1.png",
-              "price": 19.99,
-              "brandId": 1,
-              "brand": "Brand Name",
-              "categoryId": 1,
-              "category": "Category Name"
-            }
-          ]
-        }
-        ```
-
-*   **GET /api/Products/{id}:** Retrieves a product by ID.
-    *   **Response:**
-        ```json
-        {
-          "id": 1,
-          "name": "Product Name",
-          "description": "Product Description",
-          "pictureUrl": "https://localhost:7219//images/products/sb-ang1.png",
-          "price": 19.99,
-          "brandId": 1,
-          "brand": "Brand Name",
-          "categoryId": 1,
-          "category": "Category Name"
-        }
-        ```
-*   **GET /api/Products/brands:** Retrieves all brands
-    *   **Response:**
-        ```json
-         [
-            {
-                "id": 1,
-                "name": "Addidas"
-            },
-            {
-                "id": 2,
-                "name": "Nike"
-            }
-        ]
-        ```
-*   **GET /api/Products/categories:** Retrieves all categories
-     *   **Response:**
-        ```json
-          [
-            {
-                "id": 1,
-                "name": "Shoes"
-            },
-            {
-                "id": 2,
-                "name": "Bags"
-            }
-        ]
-        ```
-
-### Basket API
-
-*   **GET /api/Basket/{id}:** Retrieves a customer's basket by ID.
-    *   **Response:**
-        ```json
-        {
-          "id": "customer123",
-          "items": [
-            {
-              "id": 1,
-              "productName": "Product Name",
-              "pictureUrl": "string",
-              "price": 19.99,
-              "quantity": 1,
-              "brand": "string",
-              "category": "string"
-            }
-          ]
-        }
-        ```
-
-*   **POST /api/Basket:** Updates a customer's basket.
-    *   **Request Body:**
-        ```json
-        {
-          "id": "customer123",
-          "items": [
-            {
-              "id": 1,
-              "productName": "Product Name",
-              "pictureUrl": "string",
-              "price": 19.99,
-              "quantity": 2,
-              "brand": "string",
-              "category": "string"
-            }
-          ]
-        }
-        ```
-
-    *   **Response:**
-        ```json
-        {
-          "id": "customer123",
-          "items": [
-            {
-              "id": 1,
-              "productName": "Product Name",
-              "pictureUrl": "string",
-              "price": 19.99,
-              "quantity": 2,
-              "brand": "string",
-              "category": "string"
-            }
-          ]
-        }
-        ```
-
-*   **DELETE /api/Basket/{id}:** Deletes a customer's basket.
-    *   **Response:** 204 No Content
-
-### Buggy API
-
-*   **GET /api/Buggy/not-found:** Returns a 404 Not Found error.
-*   **GET /api/Buggy/server-error:** Returns a 500 Server Error.
-*   **GET /api/Buggy/bad-request:** Returns a 400 Bad Request error.
-*   **GET /api/Buggy/unauthorized:** Returns a 401 Unauthorized error. Requires authentication.
-*   **GET /api/Buggy/forbidden:** Returns a 403 Forbidden error.
+Swagger UI is enabled for development environments.  To access it, navigate to `https://localhost:{port}/swagger` in your browser when the application is running.  This provides interactive API documentation and allows you to test the endpoints.
 
 ## Contributing Guidelines
 
-Contributions to the Talabat Delivery APIs are welcome. Please follow these guidelines:
+Contributions are welcome! To contribute to this project, follow these steps:
 
 1.  Fork the repository.
 2.  Create a new branch for your feature or bug fix.
 3.  Implement your changes.
-4.  Write unit tests for your changes.
-5.  Submit a pull request.
-
-## License Information
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+4.  Write tests for your changes.
+5.  Ensure all tests pass.
+6.  Submit a pull request.
 
