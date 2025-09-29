@@ -1,5 +1,4 @@
-﻿
-using System.Net;
+﻿using System.Net;
 using System.Reflection.Metadata.Ecma335;
 using Talabat.APIs.Controllers.Errors;
 using Talabat.Application.Exceptions;
@@ -47,13 +46,32 @@ namespace Talabat.APIs.Middlewares
             switch (ex)
             {
                 case NotFoundException:
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     response = new ApiResponse((int)HttpStatusCode.NotFound);
+                    break;
+                case ValidationException validationException:
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    
+                   
+                    var validationErrors = validationException.Errors?.Select(errorMessage => 
+                        new ValidationError 
+                        { 
+                            Field = GetFieldFromErrorMessage(errorMessage), 
+                            Errors = new[] { errorMessage } 
+                        }) ?? Enumerable.Empty<ValidationError>();
+                    
+                    response = new ApiValidationErrorResponse(ex.Message) 
+                    { 
+                        Errors = validationErrors 
+                    };
                     break;
                 case BadRequestException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response = new ApiResponse((int)HttpStatusCode.BadRequest);
-
+                    break;
+                case UnAuthorizedException:
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    response = new ApiResponse((int)HttpStatusCode.Unauthorized);
                     break;
                 default:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -64,9 +82,16 @@ namespace Talabat.APIs.Middlewares
             }
             context.Response.ContentType = "application/json";
 
-
-
             await context.Response.WriteAsync(response.ToString());
+        }
+
+        private string GetFieldFromErrorMessage(string errorMessage)
+        {
+            if (errorMessage.Contains("Email", StringComparison.OrdinalIgnoreCase)) return "Email";
+            if (errorMessage.Contains("Username", StringComparison.OrdinalIgnoreCase)) return "UserName";
+            if (errorMessage.Contains("Password", StringComparison.OrdinalIgnoreCase)) return "Password";
+            if (errorMessage.Contains("Phone", StringComparison.OrdinalIgnoreCase)) return "PhoneNumber";
+            return "General";
         }
     }
 }

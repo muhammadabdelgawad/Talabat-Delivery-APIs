@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Talabat.Application.Abstraction.Services;
+using Talabat.Application.Abstraction.Services.Auth;
 using Talabat.Application.Abstraction.Services.Basket;
 using Talabat.Application.Abstraction.Services.Products;
 using Talabat.Application.Services.Products;
 using Talabat.Domain.Contracts.Presistence.UnitOfWork;
-using Talabat.Infrastructure.Persistence.Repositories.Baskets;
 namespace Talabat.Application.Services
 {
     public class ServiceManager : IServiceManager
@@ -15,18 +15,23 @@ namespace Talabat.Application.Services
         private readonly Lazy<IProductService> _productService;
         private readonly Lazy<IBasketService> _basketService;
         private readonly IConfiguration _configuration;
+        private readonly Lazy<IAuthService> _authService;
         public ServiceManager(IUnitOfWork unitOfWork , IMapper mapper,
-            IConfiguration configuration,Func<IBasketService> basketServiceFactory)
+            IConfiguration configuration,Func<IBasketService> basketServiceFactory,
+            Func<IAuthService> authServiceFactory)
         {
-            _configuration=configuration;
+            //_configuration=configuration;
             _unitOfWork =unitOfWork;
-            _mapper=mapper;
+            _mapper=mapper; 
             _productService=new Lazy<IProductService>(()=>new ProductService(_unitOfWork,_mapper));
-            _basketService = new Lazy<IBasketService>(basketServiceFactory);
+            _basketService = new Lazy<IBasketService>(basketServiceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+            _authService = new Lazy<IAuthService>(authServiceFactory , LazyThreadSafetyMode.ExecutionAndPublication);
         }
         public IProductService ProductService  =>_productService.Value;
 
         public IBasketService BasketService => _basketService.Value;
+
+        public IAuthService AuthService => _authService.Value;
     }
 }
  
