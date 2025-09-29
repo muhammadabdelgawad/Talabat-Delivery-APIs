@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Talabat.APIs.Controllers.Base;
 using Talabat.Application.Abstraction.Models.Auth;
 using Talabat.Application.Abstraction.Models.Common;
@@ -46,6 +47,23 @@ namespace Talabat.APIs.Controllers.Controllers.Account
             var result = await serviceManager.AuthService.UpdateUserAddressAsync(User, addressDto);
             return Ok(result);
         }
+
+        [HttpGet("emailexisits")]
+       
+        public async Task<ActionResult> CheckEmailExists(string email)
+        {
+            return Ok(await serviceManager.AuthService.CheckEmailExists(email));
+        }
+
+
+
+
+
+
+
+
+
+
     }
 }
  

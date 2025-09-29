@@ -47,7 +47,6 @@ namespace Talabat.Application.Services.Auth
 
         public async Task<UserDto> RegisterAsync(RegisterDto model)
         {
-          
             var existingUser = await userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
             {
@@ -161,6 +160,11 @@ namespace Talabat.Application.Services.Auth
             if (!result.Succeeded) throw new BadRequestException(result.Errors.Select(error => error.Description)
                                                                               .Aggregate((x, y) => $"{x},{y}"));
             return addressDto;
+        }
+
+        public async Task<bool> CheckEmailExists(string email)
+        {
+            return await userManager.FindByEmailAsync(email!) is not null;
         }
     }
 }
