@@ -1,6 +1,6 @@
-# Talabat Food Delivery -APIs
+# OrderEase Food Delivery -APIs
 
-This repository contains the backend APIs for a Talabat-like food delivery platform. The APIs are built using ASP.NET Core and Entity Framework Core for data persistence with SQL Server.  Identity management is implemented using ASP.NET Identity.  Redis is used for basket management and Stripe for payments.
+This repository contains the backend APIs for a OrderEase-like food delivery platform. The APIs are built using ASP.NET Core and Entity Framework Core for data persistence with SQL Server.  Identity management is implemented using ASP.NET Identity.  Redis is used for basket management and Stripe for payments.
 
 ## Features and Functionality
 
